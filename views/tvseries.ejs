@@ -1,1 +1,10 @@
+<% include partials/header.ejs %>
+
 <h1> The TV Series Page </h1>
+
+<a href="/tonight/tvresults"> Recommend A TV Series ! </a>
+
+<h3> Most popular on TV </h3>
+<% data["results"].forEach(function(tvs){ %>
+  <p><%=tvs.name;%></p>
+<% }); %>
