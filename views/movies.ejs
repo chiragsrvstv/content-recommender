@@ -1,13 +1,29 @@
 <% include partials/header.ejs %>
 
-<h1> The movies page </h1>
+<div class="container">
+  <h1> The movies page </h1>
 
-<a href="/tonight/movieresults"> Recommend A Movie ! </a>
-<div>
-<a href="/tonight"> Filter </a>
+  <a href="/tonight/movieresults"> Recommend A Movie ! </a>
+  <div>
+  <a href="/tonight"> Filter </a>
+  <form class="" action="index.html" method="POST">
+    <input type="text" name="genre" value="">
+    <select class="custom-select" name="">
+      <option selected value="">Happy</option>
+      <option value="">Sad</option>
+    </select>
+    <input type="text" name="mood" value="">
+
+  </form>
+
+
+
+
+  </div>
+  <h3> The most popular movies of this year 😇 </h3>
+  <% data["results"].forEach(function(movie){ %>
+    <p><%=movie.title;%></p>
+  <% }); %>
+
 </div>
-<h3> The most popular movies of this year 😇 </h3>
-<% data["results"].forEach(function(movie){ %>
-  <p><%=movie.title;%></p>
-<% }); %>
 
