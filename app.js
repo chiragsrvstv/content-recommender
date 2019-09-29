@@ -7,7 +7,7 @@ const express       = require('express'),
 app.listen(3000, function() {
   console.log("serving port 3000 localhost");
 });
-
+app.use(express.static("public"));
 //routes
 
 // landing Page
