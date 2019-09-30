@@ -8,6 +8,7 @@ app.listen(3000, function() {
   console.log("serving port 3000 localhost");
 });
 app.use(express.static("public"));
+app.use(bodyParser.urlencoded({extended: true}));
 //routes
 
 // landing Page
@@ -21,10 +22,11 @@ app.get("/tonight", function (req, res) {
   res.render("index.ejs");
 });
 
-// //movies route
-// app.get("/tonight/movies", function (req, res) {
-//   res.render("movies.ejs");
-// });
+ //movies result route
+app.post("/tonight/movies/moviesresults", function (req, res) {
+  res.render("movieResults.ejs");
+  console.log(req.body);
+});
 
 // //tvseries route
 // app.get("/tonight/tvseries", function (req, res) {
@@ -40,7 +42,7 @@ app.get("/tonight/movies", function (req, res) {
   request(url1, function (error, response, body) {
     if(!error && response.statusCode == 200){
       const data = JSON.parse(body);
-      console.log(data);
+      //console.log(data);
       res.render("movies.ejs", {data: data});
     }
   });
