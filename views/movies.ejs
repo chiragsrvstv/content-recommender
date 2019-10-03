@@ -9,30 +9,35 @@
   <h2> Mood </h2>
   <div>
     <form class="" action="/tonight/movies/moviesresults" method="POST">
-      <input type="checkbox" name="happy" value="">
+      <input type="checkbox" name="happy" value="happy">
         <label> Happy </label>
-      <input type="checkbox" name="sad" value="">
+      <input type="checkbox" name="sad" value="sad">
       <label> Sad </label>
-      <input type="checkbox" name="confused" value="">
+      <input type="checkbox" name="confused" value="confused">
       <label> Confused </label>
   </div>
   <h2> Genres </h2>
   <form class="" action="/tonight/moviesresults" method="post">
       <div>
-    <input type="checkbox" name="comedy" value="">
+    <input type="checkbox" class="radio" name="adventure" value="12">
+    <label> Adventure </label>
+    <input type="checkbox" class="radio" name="action" value="28">
+    <label> Action </label>
+    <input type="checkbox" class="radio" name="drama" value="18">
+    <label> Drama </label>
+    <input type="checkbox" name="comedy" value="35">
     <label> Comedy </label>
-    <input type="checkbox" name="thriller" value="">
+    <input type="checkbox" name="thriller" value="53">
     <label> Thriller </label>
-    <input type="checkbox" name="romantic" value="">
-    <label> Romantic </label>
+    <input type="checkbox" name="horror" value="27">
+    <label> Horror </label>
+    <input type="checkbox" name="romance" value="10749">
+    <label> Romance </label>
   </div>
   <div>
   <button> Submit </button>
   </div>
   </form>
-
-
-
   </div>
   <h3> The most popular movies of this year 😇 </h3>
   <% data["results"].forEach(function(movie){ %>
