@@ -23,16 +23,16 @@ app.get("/tonight", function(req, res) {
 
 //movies result route
 app.post("/tonight/movies/moviesresults", function(req, res) {
-  genres = [];
-  genres = req.body;
-  gen = []
+  var genres = req.body.genre;
   console.log(genres);
-  for (var key in genres){
-    gen.push(genres[key]);
-};
-  console.log(gen);
+  // var gen = []
+  // console.log(genres);
+  // for (var key in genres){
+  //   gen.push(genres[key]);
+  // };
+  // console.log(gen);
   const url3 =
-    "https://api.themoviedb.org/3/discover/movie?api_key=***REMOVED***&language=en-US&sort_by=popularity.desc&region=IN,US&include_adult=true&include_video=false&page=1&&with_genres="+gen;
+    "https://api.themoviedb.org/3/discover/movie?api_key=***REMOVED***&language=en-US&sort_by=popularity.desc&region=IN,US&include_adult=true&include_video=false&page=1&&with_genres="+genres;
   request(url3, function(error, response, body) {
     if (!error && response.statusCode == 200) {
       const data = JSON.parse(body);
