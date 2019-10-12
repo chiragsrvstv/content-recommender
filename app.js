@@ -68,14 +68,15 @@ app.get("/tonight/tvseries", function(req, res) {
 });
 
 // tvseries result oute
-app.post("/tonight/tvserie/tvresults", function(req, res) {
+app.post("/tonight/tvseries/tvresults", function(req, res) {
   const genres = req.body.genre;
-  const tvResultsUrl = "https://api.themoviedb.org/3/discover/tv?api_key=90dc517176585a03c348c93afdd70126&language=en-US&sort_by=popularity.desc&page=1&timezone=America%2FNew_York&include_null_first_air_dates=false&with_genres="+
+  const tvResultsUrl = "https://api.themoviedb.org/3/discover/tv?api_key=90dc517176585a03c348c93afdd70126&language=en-US&region=IN,US&sort_by=popularity.desc&include_null_first_air_dates=false&with_genres="+
   genres;
   request(tvResultsUrl, function (error, response, body) {
     if(!error && response.statusCode == 200) {
       const data = JSON.parse(body);
       res.render("tvresults.ejs", {data: data});
+      console.log(data);
     }
   });
 });
