@@ -2,7 +2,11 @@
 <div class="ui container">
   <h1> Your TV Series is 😍 </h1>
   <div>
-    data
+    <% data["results"].forEach(function(tvseries){ %>
+      <p>
+        <%= tvseries.name %>
+      </p>
+    <% }); %>
   </div>
 </div>
 <% include partials/footer.ejs %>
