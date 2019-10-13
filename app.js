@@ -49,7 +49,7 @@ app.post("/tonight/movies/moviesresults", function(req, res) {
     if (!error && response.statusCode == 200) {
       const data = JSON.parse(body);
       res.render("movieResults.ejs", { data: data });
-      //console.log(data);
+      console.log(data);
     }
   });
 });
