@@ -1,9 +1,22 @@
 <% include partials/header.ejs %>
   <div class="ui container">
     <h1> Your movie is 😇 </h1>
-    <div>
-    <% data["results"].forEach(function(movie){ %>
-      <p><%=movie.title;%></p>
+    <div class="ui link cards">
+      <% data["results"].forEach(function(movie){ %>
+        <div class="card">
+        <div class="image">
+          <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
+          </div>
+          <div class="content">
+            <div class="header">
+                <p><%=movie.title;%></p>
+              </div>
+            <div class="description">
+              <%=movie.overview;%>
+            </div>
+            </div>
+        </div>
+
     <% }); %>
     </div>
   </div>
