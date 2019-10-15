@@ -43,7 +43,7 @@ app.post("/tonight/movies/moviesresults", function(req, res) {
   var genres = req.body.genre;
   console.log(genres);
   const url3 =
-    "https://api.themoviedb.org/3/discover/movie?api_key=***REMOVED***&language=en-US&sort_by=popularity.desc&region=IN,US&include_adult=true&include_video=false&page=1&with_genres=" +
+    "https://api.themoviedb.org/3/movie/top_rated?api_key=***REMOVED***&language=en-US&region=US,IN&include_adult=true&include_video=false&page=1&with_genres=" +
     genres;
   request(url3, function(error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -80,5 +80,3 @@ app.post("/tonight/tvseries/tvresults", function(req, res) {
     }
   });
 });
-
-
