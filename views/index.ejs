@@ -1,10 +1,34 @@
  <% include partials/header.ejs %>
 
-<h1> The landing Page </h1>
+<div class="container">
 
-<div>
-<a href="/tonight/movies"> Movies </a>
+  <h1> The landing Page </h1>
+
+  <div class="ui placeholder segment">
+    <div class="ui two column stackable center aligned full grid">
+      <div class="ui vertical divider"> Or </div>
+      <div class="middle aligned row">
+        <div class="column">
+          <div class="ui icon header">
+            <a href="/tonight/movies">
+            <i class="film icon">
+              Movies
+            </i>
+          </a>
+          </div>
+        </div>
+        <div class="column">
+          <div class="ui icon header">
+            <a href="/tonight/tvseries">
+            <i class="tv icon">
+            TV Series
+            </i>
+          </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<a href="/tonight/tvseries"> TV Series </a>
 
 <% include partials/footer.ejs %>
