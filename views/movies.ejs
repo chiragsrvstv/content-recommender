@@ -3,71 +3,84 @@
 <div class="ui container">
   <h1> The movies page </h1>
 
-  <a href="/tonight"> Back </a>
-  <h2> Mood </h2>
-  <!-- <div>
-    <form class="" action="/tonight/movies/moviesResults" method="POST">
-      <input type="checkbox" name="genre" value="35, 10749">
-        <label> Easy </label>
-      <input type="checkbox" name="genre" value="10751, 35, 12">
+
+  <div>
+    <h2> Mood </h2>
+    <form class="" action="/tonight/movies/moviesresults" method="POST">
+      <input type="radio" name="genre" value="35, 10749">
+      <label> Easy </label>
+      <input type="radio" name="genre" value="10751, 35, 12">
       <label> Uplifting </label>
-      <input type="checkbox" name="genre" value="18, 53, 80">
+      <input type="radio" name="genre" value="18, 53, 80">
       <label> Thrilling </label>
-    </form>
-  </div> -->
+  </div>
+
+  <!-- form that posts genres selected by user -->
   <h2> Genres </h2>
   <form class="" action="/tonight/movies/moviesresults" method="post">
       <div class="ui checkbox">
         <input type="checkbox" name="genre" value="12">
-        <label </label>
-      </div>
-      <div class="ui checkbox">
         <label> Adventure </label>
-        <input type="checkbox" name="genre" value="28">
       </div>
       <div class="ui checkbox">
-        <input type="checkbox" name="genre" value="18">
+        <input type="checkbox" name="genre" value="28">
         <label> Action </label>
       </div>
       <div class="ui checkbox">
-        <input type="checkbox" name="genre" value="35">
+        <input type="checkbox" name="genre" value="18">
         <label> Drama </label>
+      </div>
+      <div class="ui checkbox">
+        <input type="checkbox" name="genre" value="35">
+        <label> Comedy </label>
       </div>
     <div class="ui checkbox">
       <input type="checkbox" name="genre" value="53">
-      <label> Comedy </label>
-    </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="27">
       <label> Thriller </label>
     </div>
     <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="10749">
+      <input type="checkbox" name="genre" value="27">
       <label> Horror </label>
     </div>
     <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="10751">
+      <input type="checkbox" name="genre" value="10749">
       <label> Romance </label>
     </div>
     <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="10402">
+      <input type="checkbox" name="genre" value="10751">
       <label> Family </label>
     </div>
     <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="80">
+      <input type="checkbox" name="genre" value="10402">
       <label> Music </label>
     </div>
     <div class="ui checkbox">
       <input type="checkbox" name="genre" value="80">
       <label> Crime </label>
     </div>
+    <div class="ui checkbox">
+      <input type="checkbox" name="genre" value="878">
+      <label> Science Fiction </label>
+    </div>
+    <div class="ui checkbox">
+      <input type="checkbox" name="genre" value="99">
+      <label> Documentary </label>
+    </div>
     <button> Recommend A Movie ! </button>
   </form>
 
+<!-- displaying list of popular movies from the response by the api -->
+
   <h3> The most popular movies of this year 😇 </h3>
+  <div class="ui medium images">
   <% data["results"].forEach(function(movie){ %>
-    <p><%=movie.title;%></p>
+    <a class="ui medium image" href="#"><%=movie.title;%>
+      <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
+    </a>
+
   <% }); %>
+      </div>
+
 
 </div>
 <% include partials/footer.ejs %>
