@@ -3,48 +3,67 @@
 <div class="ui container">
   <h1> The movies page </h1>
 
-  <a href="/tonight/movieresults"> Recommend A Movie ! </a>
-  <div>
   <a href="/tonight"> Back </a>
   <h2> Mood </h2>
-  <div>
-    <form class="" action="/tonight/movies/moviesresults" method="POST">
+  <!-- <div>
+    <form class="" action="/tonight/movies/moviesResults" method="POST">
       <input type="checkbox" name="genre" value="35, 10749">
         <label> Easy </label>
       <input type="checkbox" name="genre" value="10751, 35, 12">
       <label> Uplifting </label>
       <input type="checkbox" name="genre" value="18, 53, 80">
       <label> Thrilling </label>
-  </div>
+    </form>
+  </div> -->
   <h2> Genres </h2>
-  <form class="" action="/tonight/moviesresults" method="post">
-      <div>
-    <input type="checkbox" name="genre" value="12">
-    <label> Adventure </label>
-    <input type="checkbox" name="genre" value="28">
-    <label> Action </label>
-    <input type="checkbox" name="genre" value="18">
-    <label> Drama </label>
-    <input type="checkbox" name="genre" value="35">
-    <label> Comedy </label>
-    <input type="checkbox" name="genre" value="53">
-    <label> Thriller </label>
-    <input type="checkbox" name="genre" value="27">
-    <label> Horror </label>
-    <input type="checkbox" name="genre" value="10749">
-    <label> Romance </label>
-    <input type="checkbox" name="genre" value="10751">
-    <label> Family </label>
-    <input type="checkbox" name="genre" value="10402">
-    <label> Music </label>
-    <input type="checkbox" name="genre" value="80">
-    <label> Crime </label>
-  </div>
-  <div>
-  <button> Submit </button>
-  </div>
+  <form class="" action="/tonight/movies/moviesresults" method="post">
+      <div class="ui checkbox">
+        <input type="checkbox" name="genre" value="12">
+        <label </label>
+      </div>
+      <div class="ui checkbox">
+        <label> Adventure </label>
+        <input type="checkbox" name="genre" value="28">
+      </div>
+      <div class="ui checkbox">
+        <input type="checkbox" name="genre" value="18">
+        <label> Action </label>
+      </div>
+      <div class="ui checkbox">
+        <input type="checkbox" name="genre" value="35">
+        <label> Drama </label>
+      </div>
+    <div class="ui checkbox">
+      <input type="checkbox" name="genre" value="53">
+      <label> Comedy </label>
+    </div>
+    <div class="ui checkbox">
+      <input type="checkbox" name="genre" value="27">
+      <label> Thriller </label>
+    </div>
+    <div class="ui checkbox">
+      <input type="checkbox" name="genre" value="10749">
+      <label> Horror </label>
+    </div>
+    <div class="ui checkbox">
+      <input type="checkbox" name="genre" value="10751">
+      <label> Romance </label>
+    </div>
+    <div class="ui checkbox">
+      <input type="checkbox" name="genre" value="10402">
+      <label> Family </label>
+    </div>
+    <div class="ui checkbox">
+      <input type="checkbox" name="genre" value="80">
+      <label> Music </label>
+    </div>
+    <div class="ui checkbox">
+      <input type="checkbox" name="genre" value="80">
+      <label> Crime </label>
+    </div>
+    <button> Recommend A Movie ! </button>
   </form>
-  </div>
+
   <h3> The most popular movies of this year 😇 </h3>
   <% data["results"].forEach(function(movie){ %>
     <p><%=movie.title;%></p>
