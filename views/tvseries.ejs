@@ -3,7 +3,7 @@
 <div class="ui container">
 <h1> The TV Series Page </h1>
 
-<a href="/tonight/tvseries/tvresults"> Recommend A TV Series ! </a>
+<a href="/tonight/tvseries/tvresults"> </a>
 <h2> Mood </h2>
 <div>
   <form class="" action="/tonight/tvseries/tvresults" method="POST">
@@ -45,15 +45,19 @@
   <label> Documentary </label>
 </div>
 <div>
-<button> Submit </button>
+<button class="positive ui button"> Recommend A TV Series !  </button>
 </div>
 </form>
 
 
-<h3> Most popular on TV </h3>
-<% data["results"].forEach(function(tvs){ %>
-  <p><%=tvs.name;%></p>
-<% }); %>
+<h2> Most popular on TV </h2>
+<div class="ui medium images">
+  <% data["results"].forEach(function(tvs){ %>
+    <a class="ui medium image" href="#"> <%=tvs.name;%>
+      <img src="https://image.tmdb.org/t/p/original<%=tvs.poster_path;%>" alt="poster image">
+    </a>
+  <% }); %>
+</div>
 
 </div>
 
