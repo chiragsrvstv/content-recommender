@@ -74,13 +74,23 @@
 <!-- displaying list of popular movies from the response by the api -->
 
   <h2> The most popular movies of this year 😇 </h2>
-  <div class="ui medium images">
+  <div class="ui link cards">
   <% data["results"].forEach(function(movie){ %>
-    <a class="ui medium image" href="#"><%=movie.title;%>
-      <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
-    </a>
+    <div class="card">
+      <div class="image">
+        <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
+      </div>
+      <div class="content">
+        <div class="header">
+          <a class="" href="#"><%=movie.title;%>
+          </a>
+        </div>
+      </div>
+    </div>
+
 
   <% }); %>
+    </div>
   </div>
 
 
