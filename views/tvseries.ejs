@@ -51,11 +51,18 @@
 
 
 <h2> Most popular on TV </h2>
-<div class="ui medium images">
+<div class="ui link cards">
   <% data["results"].forEach(function(tvs){ %>
-    <a class="ui medium image" href="#"> <%=tvs.name;%>
-      <img src="https://image.tmdb.org/t/p/original<%=tvs.poster_path;%>" alt="poster image">
-    </a>
+    <div class="card">
+      <div class="image">
+        <img src="https://image.tmdb.org/t/p/original<%=tvs.poster_path;%>" alt="poster image">
+      </div>
+      <div class="content">
+        <div class="header">
+          <a class="ui medium image" href="#"> <%=tvs.name;%> </a>
+        </div>
+      </div>
+    </div>
   <% }); %>
 </div>
 
