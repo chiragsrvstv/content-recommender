@@ -17,7 +17,7 @@
 
   <!-- form that posts genres selected by user -->
   <h2> Genres </h2>
-  <required form class="" action="/tonight/movies/moviesresults" method="post">
+  <form class="" action="/tonight/movies/moviesresults" method="post">
       <div class="ui checkbox">
         <input type="checkbox" name="genre" value="12">
         <label> Adventure </label>
@@ -66,12 +66,14 @@
       <input type="checkbox" name="genre" value="99">
       <label> Documentary </label>
     </div>
-    <button> Recommend A Movie ! </button>
+    <div>
+    <button class="positive ui button"> Recommend A Movie ! </button>
+    </div>
   </form>
 
 <!-- displaying list of popular movies from the response by the api -->
 
-  <h3> The most popular movies of this year 😇 </h3>
+  <h2> The most popular movies of this year 😇 </h2>
   <div class="ui medium images">
   <% data["results"].forEach(function(movie){ %>
     <a class="ui medium image" href="#"><%=movie.title;%>
@@ -79,7 +81,7 @@
     </a>
 
   <% }); %>
-      </div>
+  </div>
 
 
 </div>
