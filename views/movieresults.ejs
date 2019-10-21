@@ -3,7 +3,7 @@
     <h1> Your movie is 😇 </h1>
     <div class="ui link cards">
       <% data["results"].forEach(function(movie){ %>
-        <div class="card">
+        <a class="card" href="/tonight/movies/show/<%=movie.id %>">
         <div class="image">
           <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
           </div>
@@ -15,7 +15,7 @@
               <p> <%=movie.overview;%> </p>
             </div>
             </div>
-        </div>
+        </a>
 
     <% }); %>
     </div>

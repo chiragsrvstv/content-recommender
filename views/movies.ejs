@@ -72,21 +72,20 @@
   </form>
 
 <!-- displaying list of popular movies from the response by the api -->
-
   <h2> The most popular movies of this year 😇 </h2>
   <div class="ui link cards">
   <% data["results"].forEach(function(movie){ %>
-    <div class="card">
+    <a class="card" href="/tonight/movies/show/<%=movie.id %>">
       <div class="image">
         <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
       </div>
       <div class="content">
         <div class="header">
-          <a class="" href="#"><%=movie.title;%>
-          </a>
+          <p class=""><%=movie.title;%>
+          </p>
         </div>
       </div>
-    </div>
+    </a>
 
 
   <% }); %>
@@ -94,5 +93,5 @@
   </div>
 
 
-</div>
+
 <% include partials/footer.ejs %>

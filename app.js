@@ -15,10 +15,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // a function to randomly generate combination of Genres from list of passed genres
 function randomGenres(genresList) {
   const generatedList = [];
-  for(var i=0; i<2; i++) {
-  generatedList.push(genresList[Math.floor(Math.random()*genresList.length)]);
-}
-return generatedList;
+  for (var i = 0; i < 2; i++) {
+    generatedList.push(
+      genresList[Math.floor(Math.random() * genresList.length)]
+    );
+  }
+  return generatedList;
 }
 
 //-----------------------routes--------------------------------
@@ -54,8 +56,8 @@ app.post("/tonight/movies/moviesresults", function(req, res) {
   var genres = req.body.genre;
 
   // generating random genres when the user has not specified it.
-  if(genres == undefined) {
-    const movieGenreList = [12,28,35,18,53,27,80,878];
+  if (genres == undefined) {
+    const movieGenreList = [12, 28, 35, 18, 53, 27, 80, 878];
     genres = randomGenres(movieGenreList);
   }
   // // making api request for top_rated movies results
@@ -72,7 +74,6 @@ app.post("/tonight/movies/moviesresults", function(req, res) {
 
 // tv series route and api connection
 app.get("/tonight/tvseries", function(req, res) {
-
   // making api request for popular tv shows
   const tvRequest =
     "https://api.themoviedb.org/3/discover/tv?api_key=***REMOVED***&language=en-US&region=IN&sort_by=popularity.desc&page=1&include_null_first_air_dates=false";
@@ -90,18 +91,32 @@ app.post("/tonight/tvseries/tvresults", function(req, res) {
   var genres = req.body.genre;
 
   // generating random genres when the user has not specified it.
-  if(genres == undefined) {
-    const tvGenreList = [10759,18,35,10762,10765,9648,80];
+  if (genres == undefined) {
+    const tvGenreList = [10759, 18, 35, 10762, 10765, 9648, 80];
     genres = randomGenres(tvGenreList);
   }
 
   // making api request for popular tv shows
-  const tvResultsRequest = "https://api.themoviedb.org/3/discover/tv?api_key=***REMOVED***&language=en-US&region=IN,US&sort_by=popularity.desc&include_null_first_air_dates=false&with_genres="+
-  genres;
-  request(tvResultsRequest, function (error, response, body) {
-    if(!error && response.statusCode == 200) {
+  const tvResultsRequest =
+    "https://api.themoviedb.org/3/discover/tv?api_key=***REMOVED***&language=en-US&region=IN,US&sort_by=popularity.desc&include_null_first_air_dates=false&with_genres=" +
+    genres;
+  request(tvResultsRequest, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
       const data = JSON.parse(body);
-      res.render("tvresults.ejs", {data: data});
+      res.render("tvresults.ejs", { data: data });
     }
   });
+});
+//show movie details routes
+app.get("/tonight/movies/show/:id", function(req, res) {
+  id = req.params.id
+  const showRequest =
+    "https://api.themoviedb.org/3/movie/" + id + "?api_key=***REMOVED***&language=en-US"
+    request(showRequest, function (error, response, body) {
+      if(!error && response.statusCode==200) {
+        const foundContent = JSON.parse(body);
+        res.render("show.ejs", {content: foundContent});
+        console.log(foundContent);
+      }
+    })
 });
