@@ -3,19 +3,19 @@
   <h1> Your TV Series is 😍 </h1>
     <div class="ui link cards">
     <% data["results"].forEach(function(tvseries){ %>
-      <div class="card">
-      <div class="image">
-      <img src="https://image.tmdb.org/t/p/original<%=tvseries.poster_path;%>" alt="poster image">
+      <a class="card" href="/tonight/tvseries/show/<%=tvseries.id %>">
+        <div class="image">
+          <img src="https://image.tmdb.org/t/p/original<%=tvseries.poster_path;%>" alt="poster image">
       </div>
       <div class="content">
         <div class="header">
-      <p> <%= tvseries.name %> </p>
-      </div>
+          <p> <%= tvseries.name %> </p>
+        </div>
       <div class="description">
         <p> <%=tvseries.overview;%> </p>
       </div>
-      </div>
-  </div>
+    </div>
+  </a>
     <% }); %>
   </div>
 </div>

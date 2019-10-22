@@ -85,7 +85,7 @@ app.get("/tonight/tvseries", function(req, res) {
   });
 });
 
-// tvseries result oute
+// tvseries result route
 app.post("/tonight/tvseries/tvresults", function(req, res) {
   // fetching genres from the form submitted
   var genres = req.body.genre;
@@ -115,8 +115,22 @@ app.get("/tonight/movies/show/:id", function(req, res) {
     request(showRequest, function (error, response, body) {
       if(!error && response.statusCode==200) {
         const foundContent = JSON.parse(body);
-        res.render("show.ejs", {content: foundContent});
-        console.log(foundContent);
+        res.render("showMovie.ejs", {movieContent: foundContent});
+        // console.log(foundContent);
+      }
+    })
+});
+
+//show tv series details routes
+app.get("/tonight/tvseries/show/:id", function(req, res) {
+  id = req.params.id
+  const showRequest =
+    "https://api.themoviedb.org/3/tv/"+ id +"?api_key=***REMOVED***&language=en-US"
+    request(showRequest, function (error, response, body) {
+      if(!error && response.statusCode==200) {
+        const foundContent = JSON.parse(body);
+        res.render("showTV.ejs", {tvContent: foundContent});
+        // console.log(foundContent);
       }
     })
 });
