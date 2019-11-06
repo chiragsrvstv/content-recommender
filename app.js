@@ -134,3 +134,35 @@ app.get("/tonight/tvseries/show/:id", function(req, res) {
       }
     })
 });
+
+// authentication
+app.get("/tonight/login", function(req, res) {
+  const requestTokenUrl = "https://api.themoviedb.org/3/authentication/token/new?api_key=***REMOVED***"
+  request(requestTokenUrl, function (error, response, body) {
+    if(!error && response.statusCode==200) {
+      const data = JSON.parse(body);
+      token = data["request_token"]
+      console.log(token);
+      res.redirect("https://www.themoviedb.org/authenticate/"+token+"?redirect_to=http://localhost:3000/tonight/approved");
+    }
+  });
+});
+
+app.get('/tonight/approved', function (req, res) {
+    console.log("approve generated");
+    const options = {
+      url: "https://api.themoviedb.org/3/authentication/session/new",
+      qs: {api_key: '***REMOVED***'},
+      headers: { 'content-type': 'application/json' },
+      body: { request_token: token },
+      json: true
+    };
+    request(options, function (error, response, body) {
+      if(!error && response.statusCode==200) {
+        console.log("successfully authenticated");
+        sessionId = body["session_id"];
+                console.log(sessionId);
+        res.redirect("/tonight");
+      }
+    });
+});
