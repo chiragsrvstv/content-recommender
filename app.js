@@ -135,34 +135,56 @@ app.get("/tonight/tvseries/show/:id", function(req, res) {
     })
 });
 
-// authentication
+// AUTHENTICATION
+
+// generating a request token + getting the user to approve it
 app.get("/tonight/login", function(req, res) {
-  const requestTokenUrl = "https://api.themoviedb.org/3/authentication/token/new?api_key=90dc517176585a03c348c93afdd70126"
-  request(requestTokenUrl, function (error, response, body) {
+  const requestTokenOptions = {
+    method: 'POST',
+    url: "https://api.themoviedb.org/4/auth/request_token",
+    headers: {
+      // its the API Read Access token found under API settings(new in v4)
+      authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MGRjNTE3MTc2NTg1YTAzYzM0OGM5M2FmZGQ3MDEyNiIsInN1YiI6IjVkODM5NzVhOWU0NTg2MDIzZjk1MjhjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9O7f4lThGGXu7OKWrlo7kvZS3rMozSecTSQnVJRvoSQ',
+      'content-type': "application/json;charset=utf-8"
+      },
+      // redirecting to our app after TMDB approves our token
+      body: {redirect_to: 'http://localhost:3000/tonight/approved'},
+      json: true
+    };
+
+  request(requestTokenOptions, function (error, response, body) {
     if(!error && response.statusCode==200) {
-      const data = JSON.parse(body);
-      token = data["request_token"]
-      console.log(token);
-      res.redirect("https://www.themoviedb.org/authenticate/"+token+"?redirect_to=http://localhost:3000/tonight/approved");
+      console.log(body);
+      requestToken = body["request_token"];
+      // after generating a token, we redirect to TMDB to approve the generated token
+      res.redirect('https://www.themoviedb.org/auth/access?request_token='+requestToken);
     }
   });
 });
 
-app.get('/tonight/approved', function (req, res) {
-    console.log("approve generated");
-    const options = {
-      url: "https://api.themoviedb.org/3/authentication/session/new",
-      qs: {api_key: '90dc517176585a03c348c93afdd70126'},
-      headers: { 'content-type': 'application/json' },
-      body: { request_token: token },
-      json: true
-    };
-    request(options, function (error, response, body) {
-      if(!error && response.statusCode==200) {
-        console.log("successfully authenticated");
-        sessionId = body["session_id"];
-                console.log(sessionId);
-        res.redirect("/tonight");
-      }
-    });
-});
+
+// approved route for redirecting and generating user access token + account id
+ app.get('/tonight/approved', function (req, res) {
+   const accessTokenOptions = {
+     method: 'POST',
+     url: "https://api.themoviedb.org/4/auth/access_token",
+     headers: {
+       // its the API Read Access token found under API settings(new in v4)
+       authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MGRjNTE3MTc2NTg1YTAzYzM0OGM5M2FmZGQ3MDEyNiIsInN1YiI6IjVkODM5NzVhOWU0NTg2MDIzZjk1MjhjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9O7f4lThGGXu7OKWrlo7kvZS3rMozSecTSQnVJRvoSQ',
+       'content-type': "application/json;charset=utf-8"
+       },
+       // passing the previously generated request token in the body
+       body: {request_token: requestToken},
+       json: true
+   };
+
+   request(accessTokenOptions, function (error, response, body) {
+     if(!error && response.statusCode == 200) {
+       console.log(body);
+      // extracting the accessToken and accountId from the body
+       accessToken = body["access_token"];
+       accountId = body["account_id"];
+       res.redirect("/tonight");
+     }
+   });
+ });
