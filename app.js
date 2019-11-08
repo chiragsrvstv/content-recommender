@@ -151,7 +151,7 @@ app.get("/tonight/login", function(req, res) {
       'content-type': "application/json;charset=utf-8"
       },
       // redirecting to our app after TMDB approves our token
-      body: {redirect_to: 'http://localhost:3000/tonight/approved'},
+      body: {redirect_to: 'http://localhost:3000/tonight/approved/'},
       json: true
     };
 
@@ -170,7 +170,7 @@ app.get("/tonight/login", function(req, res) {
 
 
 // approved route for redirecting and generating user access token + account id
- app.get('/tonight/approved', function (req, res) {
+ app.get('/tonight/approved/', function (req, res) {
    const accessTokenOptions = {
      method: 'POST',
      url: "https://api.themoviedb.org/4/auth/access_token",
@@ -190,7 +190,7 @@ app.get("/tonight/login", function(req, res) {
       // extracting the accessToken and accountId from the body
        accessToken = body["access_token"];
        accountId = body["account_id"];
-       res.redirect("/tonight");
+       res.redirect("/tonight/approved/user/home");
       }
       else {
         res.send("Ah, that's an error !");
@@ -198,11 +198,33 @@ app.get("/tonight/login", function(req, res) {
    });
  });
 
+// USER ROUTES
+
+// user index route
+app.get("/tonight/approved/user/home", function (req, res) {
+  favouriteMovieOptions = {
+    method: 'GET',
+    url: 'https://api.themoviedb.org/4/account/'+ accountId +'/movie/favorites',
+    qs: {page: '1'},
+    headers: {authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MGRjNTE3MTc2NTg1YTAzYzM0OGM5M2FmZGQ3MDEyNiIsInN1YiI6IjVkODM5NzVhOWU0NTg2MDIzZjk1MjhjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9O7f4lThGGXu7OKWrlo7kvZS3rMozSecTSQnVJRvoSQ'},
+    body: '{}'
+  };
+
+  request(favouriteMovieOptions, function (error, response, body) {
+    if(!error && response.statusCode==200){
+      const favouriteMovies = JSON.parse(body);
+      console.log(favouriteMovies);
+      res.render("user/userIndex.ejs", {favouriteMovies: favouriteMovies})
+    }
+    else {
+      res.send("Ah, that's an error !");
+    }
+  })
+});
 
 
 
-
-
+// bad url handler
 app.get("/*", function(req, res) {
   res.send("Error 404: You're in outer space now! 👽");
 });
