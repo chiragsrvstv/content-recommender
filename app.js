@@ -137,6 +137,9 @@ app.get("/tonight/tvseries/show/:id", function(req, res) {
 
 // AUTHENTICATION
 
+//initializing requestToken
+requestToken = "";
+
 // generating a request token + getting the user to approve it
 app.get("/tonight/login", function(req, res) {
   const requestTokenOptions = {
@@ -158,6 +161,9 @@ app.get("/tonight/login", function(req, res) {
       requestToken = body["request_token"];
       // after generating a token, we redirect to TMDB to approve the generated token
       res.redirect('https://www.themoviedb.org/auth/access?request_token='+requestToken);
+    }
+    else {
+      res.send("Ah, that's an error !");
     }
   });
 });
@@ -185,6 +191,18 @@ app.get("/tonight/login", function(req, res) {
        accessToken = body["access_token"];
        accountId = body["account_id"];
        res.redirect("/tonight");
-     }
+      }
+      else {
+        res.send("Ah, that's an error !");
+      }
    });
  });
+
+
+
+
+
+
+app.get("/*", function(req, res) {
+  res.send("Error 404: You're in outer space now! 👽");
+});
