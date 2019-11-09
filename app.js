@@ -204,7 +204,7 @@ app.get("/tonight/login", function(req, res) {
 app.get("/tonight/approved/user/home", function (req, res) {
   favouriteMovieOptions = {
     method: 'GET',
-    url: 'https://api.themoviedb.org/4/account/'+ accountId +'/movie/favorites',
+    url: 'https://api.themoviedb.org/4/account/'+ accountId +'/movie/favorite',
     qs: {page: '1'},
     headers: {authorization: 'Bearer ***REMOVED***'},
     body: '{}'
@@ -219,7 +219,7 @@ app.get("/tonight/approved/user/home", function (req, res) {
     else {
       res.send("Ah, that's an error !");
     }
-  })
+  });
 });
 
 
