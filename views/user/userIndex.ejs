@@ -3,16 +3,36 @@
 <div class=" ui container">
   <div class="ui header"> Here are your favourite movies </div>
   <div class="ui link card">
+
+    <% favouriteMovies["results"].forEach(function(movie) { %>
     <div class="image">
-  <img src="https://image.tmdb.org/t/p/original<%=favouriteMovies["results"][0].poster_path;%>" alt="poster image">
+  <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
 </div>
   <div class="content">
     <div class="header">
-      <p> <%= favouriteMovies["results"][0].title %> </p>
+      <p> <%= movie.title %> </p>
 </div>
 </div>
+  <% }); %>
+</div>
+
+<div class="ui header"> Here are your favourite movies </div>
+<div class="ui link card">
+
+  <% favouriteMovies["results"].forEach(function(movie) { %>
+  <div class="image">
+<img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
+</div>
+<div class="content">
+  <div class="header">
+    <p> <%= movie.title %> </p>
 </div>
 </div>
+<% }); %>
 </div>
+
+<div>
+</div>
+
 
 <% include ../partials/footer %>

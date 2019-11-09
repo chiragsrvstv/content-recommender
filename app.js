@@ -204,7 +204,7 @@ app.get("/tonight/login", function(req, res) {
 app.get("/tonight/approved/user/home", function (req, res) {
   favouriteMovieOptions = {
     method: 'GET',
-    url: 'https://api.themoviedb.org/4/account/'+ accountId +'/movie/favorites',
+    url: 'https://api.themoviedb.org/4/account/'+ accountId +'/movie/favorite',
     qs: {page: '1'},
     headers: {authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MGRjNTE3MTc2NTg1YTAzYzM0OGM5M2FmZGQ3MDEyNiIsInN1YiI6IjVkODM5NzVhOWU0NTg2MDIzZjk1MjhjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9O7f4lThGGXu7OKWrlo7kvZS3rMozSecTSQnVJRvoSQ'},
     body: '{}'
@@ -219,7 +219,7 @@ app.get("/tonight/approved/user/home", function (req, res) {
     else {
       res.send("Ah, that's an error !");
     }
-  })
+  });
 });
 
 
