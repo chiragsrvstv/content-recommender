@@ -138,7 +138,7 @@ app.get("/tonight/tvseries/show/:id", function(req, res) {
 // AUTHENTICATION
 
 //initializing requestToken
-requestToken = "";
+ requestToken = "";
 
 // generating a request token + getting the user to approve it
 app.get("/tonight/login", function(req, res) {
@@ -190,7 +190,7 @@ app.get("/tonight/login", function(req, res) {
       // extracting the accessToken and accountId from the body
        accessToken = body["access_token"];
        accountId = body["account_id"];
-       res.redirect("/tonight/approved/user/home");
+       res.redirect("/tonight/approved/"+accountId.toString());
       }
       else {
         res.send("Ah, that's an error !");
@@ -198,31 +198,83 @@ app.get("/tonight/login", function(req, res) {
    });
  });
 
+// generating a sessionId
+app.get("/tonight/approved/:account/", function (req, res) {
+  // accessToken = req.params.user;
+  sessionIdOptions = {
+    method: 'POST',
+    url: 'https://api.themoviedb.org/3/authentication/session/convert/4',
+    qs: {api_key: '90dc517176585a03c348c93afdd70126'},
+    headers: {authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MGRjNTE3MTc2NTg1YTAzYzM0OGM5M2FmZGQ3MDEyNiIsInN1YiI6IjVkODM5NzVhOWU0NTg2MDIzZjk1MjhjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9O7f4lThGGXu7OKWrlo7kvZS3rMozSecTSQnVJRvoSQ'},
+    body: {access_token: accessToken},
+    json: true
+  };
+
+  request(sessionIdOptions, function (error, response, body) {
+    if(error){
+      console.log(error);
+      res.send("Ah jeez, that's an error !");
+
+    }
+    else {
+      sentData = JSON.parse(body);
+      sessionId = sentData.session_id;
+      console.log(sessionId);
+      res.redirect("/tonight/approved/:account/"+sessionId.toString());
+    }
+  });
+
+});
+
 // USER ROUTES
 
 // user index route
-app.get("/tonight/approved/user/home", function (req, res) {
+app.get("/tonight/approved/:account/:session", function (req, res) {
   favouriteMovieOptions = {
     method: 'GET',
-    url: 'https://api.themoviedb.org/4/account/'+ accountId +'/movie/favorite',
+    url: 'https://api.themoviedb.org/4/account/'+ accountId +'/movie/rated',
     qs: {page: '1'},
     headers: {authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MGRjNTE3MTc2NTg1YTAzYzM0OGM5M2FmZGQ3MDEyNiIsInN1YiI6IjVkODM5NzVhOWU0NTg2MDIzZjk1MjhjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9O7f4lThGGXu7OKWrlo7kvZS3rMozSecTSQnVJRvoSQ'},
     body: '{}'
   };
 
   request(favouriteMovieOptions, function (error, response, body) {
-    if(!error && response.statusCode==200){
-      const favouriteMovies = JSON.parse(body);
-      console.log(favouriteMovies);
-      res.render("user/userIndex.ejs", {favouriteMovies: favouriteMovies})
+    const favouriteMovies = JSON.parse(body);
+    console.log(favouriteMovies);
+    if(error) {
+      res.send("Ah boo, that's an error !");
     }
     else {
-      res.send("Ah, that's an error !");
+      res.render("user/userIndex.ejs", {favouriteMovies: favouriteMovies});
     }
-  });
+  })
 });
 
 
+// ratings routes
+app.post("/tonight/movies/show/:id", function (req,res) {
+  const ratings = req.body.ratings;
+  const id = req.params.id;
+  console.log(ratings, id);
+  ratingOptions = {
+    method: 'POST',
+    url: 'https://api.themoviedb.org/3/movie/'+id+'/rating',
+    qs: {session_id: sessionId.session_id, api_key:'90dc517176585a03c348c93afdd70126'},
+    headers: { 'content-type': 'application/json;charset=utf-8' },
+    body: {value: ratings},
+    json: true
+  }
+  request(ratingOptions, function(error, response, body){
+    //if(!error && response.statusCode==200)
+    if(error){
+      console.log(error);
+    }
+    else{
+      console.log("Rated");
+      res.redirect('/tonight/movies/show/'+id.toString());
+    }
+  })
+});
 
 // bad url handler
 app.get("/*", function(req, res) {
