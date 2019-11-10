@@ -8,7 +8,11 @@
     <h2> Overview </h2>
     <p> <%= movieContent.overview %> </p>
     <h3><%= movieContent.vote_average %> </h3>
-  </div>
+    <!-- showing ratings if user rated the movie previously(coming soon) -->
 
+  <form class="ui form" action="/tonight/movies/show/<%= movieContent.id %>" method="POST">
+    <input type="range" name="ratings" min="0" max="10">
+  <button type="submit" class="ui button"> Rate it </button>
+  </form>
 <!-- </div> -->
 <% include partials/footer %>

@@ -2,9 +2,10 @@
 
 <div class=" ui container">
   <div class="ui header"> Here are your favourite movies </div>
-  <div class="ui link card">
+  <div class="ui link cards">
 
     <% favouriteMovies["results"].forEach(function(movie) { %>
+    <a class="card" href="/tonight/movies/show/<%= movie.id %>">
     <div class="image">
   <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
 </div>
@@ -13,25 +14,13 @@
       <p> <%= movie.title %> </p>
 </div>
 </div>
+</a>
   <% }); %>
 </div>
 
-<div class="ui header"> Here are your favourite movies </div>
-<div class="ui link card">
 
-  <% favouriteMovies["results"].forEach(function(movie) { %>
-  <div class="image">
-<img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
-</div>
-<div class="content">
-  <div class="header">
-    <p> <%= movie.title %> </p>
-</div>
-</div>
-<% }); %>
-</div>
 
-<div>
+
 </div>
 
 
