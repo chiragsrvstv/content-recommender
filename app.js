@@ -3,6 +3,8 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   request = require("request");
 
+  "use strict"
+
 // setting up server to respond requests at localhost:3000
 app.listen(3000, function() {
   console.log("serving port 3000 localhost");
@@ -221,7 +223,7 @@ app.get("/tonight/approved/:access/:account/", function (req, res) {
       console.log(body);
       const sessionId = body["session_id"];
       console.log(sessionId);
-      res.redirect("/tonight/approved/"+ accessToken +"/"+ accountId +"/"+sessionId);
+      res.redirect("/tonight/approved/"+ accessToken +"/"+ accountId +"/"+sessionId+"/home/");
     }
   });
 
@@ -230,7 +232,7 @@ app.get("/tonight/approved/:access/:account/", function (req, res) {
 // USER ROUTES
 
 // user index route
-app.get("/tonight/approved/:access/:account/:session", function (req, res) {
+app.get("/tonight/approved/:access/:account/:session/home/", function (req, res) {
   const accountId = req.params.account;
   const sessionId = req.params.session;
   const accessToken = req.params.access;
@@ -249,7 +251,30 @@ app.get("/tonight/approved/:access/:account/:session", function (req, res) {
       res.send("Ah boo, that's an error !");
     }
     else {
-      res.render("user/userIndex.ejs", {favouriteMovies: favouriteMovies});
+      res.render("user/userIndex.ejs", {favouriteMovies: favouriteMovies, sessionId: sessionId, accountId: accountId});
+    }
+  })
+});
+
+// show user movie routes
+app.get("/tonight/approved/:account/:session/home/show/:id", function (req, res) {
+  const id = req.params.id;
+  const sessionId = req.params.session;
+  showUserMovieOptions = {
+    method: 'GET',
+    url: 'https://api.themoviedb.org/3/movie/'+id,
+    qs: {api_key: '90dc517176585a03c348c93afdd70126', session_id: sessionId, append_to_response: "account_states" },
+    body:'{}',
+    json: true
+  };
+  request(showUserMovieOptions, function (error, response, body) {
+    if(error){
+      res.send("Ah jeez, that's an error !");
+    }
+    else {
+      console.log(body);
+      const content = body;
+      res.render("user/showMovies.ejs", {content: content});
     }
   })
 });
@@ -259,6 +284,7 @@ app.get("/tonight/approved/:access/:account/:session", function (req, res) {
 app.post("/tonight/movies/show/:id", function (req,res) {
   const ratings = req.body.ratings;
   const id = req.params.id;
+  // const sessionid = req.params.
   console.log(ratings, id);
   ratingOptions = {
     method: 'POST',

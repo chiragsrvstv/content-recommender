@@ -1,0 +1,20 @@
+<% include ../partials/header %>
+
+<div class="container">
+
+<div class=" ui segment">
+  <img class="ui medium image" src="https://image.tmdb.org/t/p/original<%=content["poster_path"]%>" alt="poster image">
+  <p> <%= content.title %> </p>
+
+  <!-- <div class="ui raised segment"> -->
+    <h2> Overview </h2>
+    <p> <%= content["overview"] %> </p>
+    <h3> Worldwide Ratings: <%= content["vote_average"] %> </h3>
+    <!-- showing ratings if user rated the movie previously(coming soon) -->
+    <h3> Your Ratings: <%= content["account_states"].rated.value %> </h3>
+
+  </div>
+  
+
+</div>
+<% include ../partials/footer %>
