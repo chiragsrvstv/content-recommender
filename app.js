@@ -260,6 +260,7 @@ app.get("/tonight/approved/:access/:account/:session/home/", function (req, res)
 app.get("/tonight/approved/:account/:session/home/show/:id", function (req, res) {
   const id = req.params.id;
   const sessionId = req.params.session;
+  const accountId = req.params.account;
   showUserMovieOptions = {
     method: 'GET',
     url: 'https://api.themoviedb.org/3/movie/'+id,
@@ -274,16 +275,18 @@ app.get("/tonight/approved/:account/:session/home/show/:id", function (req, res)
     else {
       console.log(body);
       const content = body;
-      res.render("user/showMovies.ejs", {content: content});
+      res.render("user/showMovies.ejs", {content: content, sessionId: sessionId, accountId: accountId});
     }
   })
 });
 
 
 // ratings routes
-app.post("/tonight/movies/show/:id", function (req,res) {
+app.post("/tonight/approved/:account/:session/home/show/:id", function (req,res) {
   const ratings = req.body.ratings;
   const id = req.params.id;
+  const sessionId = req.params.session;
+  const accountId = req.params.account;
   // const sessionid = req.params.
   console.log(ratings, id);
   ratingOptions = {
@@ -301,7 +304,7 @@ app.post("/tonight/movies/show/:id", function (req,res) {
     }
     else{
       console.log("Rated");
-      res.redirect('/tonight/movies/show/'+id.toString());
+      res.redirect('/tonight/approved/'+accountId+'/'+sessionId+'/home/show/'+id);
     }
   })
 });

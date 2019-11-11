@@ -11,10 +11,13 @@
     <p> <%= content["overview"] %> </p>
     <h3> Worldwide Ratings: <%= content["vote_average"] %> </h3>
     <!-- showing ratings if user rated the movie previously(coming soon) -->
+    <% if(content["account_states"]) { %>
     <h3> Your Ratings: <%= content["account_states"].rated.value %> </h3>
-
+  <%    } %>
   </div>
-  
-
+    <form class="ui form" action="/tonight/approved/<%=accountId%>/<%=sessionId%>/home/show/<%=content["id"]%>" method="POST">
+    <input type="range" name="ratings" min="0" max="10">
+    <button type="submit" class="ui button"> Rate it </button>
+  </form>
 </div>
 <% include ../partials/footer %>
