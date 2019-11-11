@@ -217,8 +217,9 @@ app.get("/tonight/approved/:account/", function (req, res) {
 
     }
     else {
-      sentData = JSON.parse(body);
-      sessionId = sentData.session_id;
+      console.log(body);
+      // sentData = JSON.parse(body);
+      sessionId = body["session_id"];
       console.log(sessionId);
       res.redirect("/tonight/approved/:account/"+sessionId.toString());
     }
