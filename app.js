@@ -138,7 +138,7 @@ app.get("/tonight/tvseries/show/:id", function(req, res) {
 // AUTHENTICATION
 
 //initializing requestToken
- requestToken = "";
+ // requestToken = "";
 
 // generating a request token + getting the user to approve it
 app.get("/tonight/login", function(req, res) {
@@ -188,9 +188,9 @@ app.get("/tonight/login", function(req, res) {
      if(!error && response.statusCode == 200) {
        console.log(body);
       // extracting the accessToken and accountId from the body
-       accessToken = body["access_token"];
-       accountId = body["account_id"];
-       res.redirect("/tonight/approved/"+accountId.toString());
+       const accessToken = body["access_token"];
+       const accountId = body["account_id"];
+       res.redirect("/tonight/approved/"+ accessToken +"/"+accountId);
       }
       else {
         res.send("Ah, that's an error !");
@@ -199,8 +199,9 @@ app.get("/tonight/login", function(req, res) {
  });
 
 // generating a sessionId
-app.get("/tonight/approved/:account/", function (req, res) {
-  // accessToken = req.params.user;
+app.get("/tonight/approved/:access/:account/", function (req, res) {
+  const accountId = req.params.account;
+  const accessToken = req.params.access;
   sessionIdOptions = {
     method: 'POST',
     url: 'https://api.themoviedb.org/3/authentication/session/convert/4',
@@ -218,10 +219,9 @@ app.get("/tonight/approved/:account/", function (req, res) {
     }
     else {
       console.log(body);
-      // sentData = JSON.parse(body);
-      sessionId = body["session_id"];
+      const sessionId = body["session_id"];
       console.log(sessionId);
-      res.redirect("/tonight/approved/:account/"+sessionId.toString());
+      res.redirect("/tonight/approved/"+ accessToken +"/"+ accountId +"/"+sessionId);
     }
   });
 
@@ -230,7 +230,10 @@ app.get("/tonight/approved/:account/", function (req, res) {
 // USER ROUTES
 
 // user index route
-app.get("/tonight/approved/:account/:session", function (req, res) {
+app.get("/tonight/approved/:access/:account/:session", function (req, res) {
+  const accountId = req.params.account;
+  const sessionId = req.params.session;
+  const accessToken = req.params.access;
   favouriteMovieOptions = {
     method: 'GET',
     url: 'https://api.themoviedb.org/4/account/'+ accountId +'/movie/rated',
@@ -260,7 +263,7 @@ app.post("/tonight/movies/show/:id", function (req,res) {
   ratingOptions = {
     method: 'POST',
     url: 'https://api.themoviedb.org/3/movie/'+id+'/rating',
-    qs: {session_id: sessionId.session_id, api_key:'90dc517176585a03c348c93afdd70126'},
+    qs: {session_id: sessionId, api_key:'90dc517176585a03c348c93afdd70126'},
     headers: { 'content-type': 'application/json;charset=utf-8' },
     body: {value: ratings},
     json: true
