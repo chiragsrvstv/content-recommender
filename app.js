@@ -111,7 +111,7 @@ app.post("/tonight/tvseries/tvresults", function(req, res) {
 });
 //show movie details routes
 app.get("/tonight/movies/show/:id", function(req, res) {
-  id = req.params.id
+  id = req.params.id;
   const showRequest =
     "https://api.themoviedb.org/3/movie/" + id + "?api_key=***REMOVED***&language=en-US"
     request(showRequest, function (error, response, body) {
