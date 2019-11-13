@@ -241,8 +241,37 @@ app.get("/tonight/login", function(req, res) {
       res.redirect("/tonight/approved/access/home/");
     }
   });
-
 });
+
+// logout or delete session
+  app.get("/tonight/logout", function(req,res) {
+    logoutOptions = {
+      method: 'DELETE',
+      url: 'https://api.themoviedb.org/3/authentication/session',
+      headers: {'content-type': 'application/json;charset=utf-8'},
+      qs: {api_key: '90dc517176585a03c348c93afdd70126'},
+      body: {session_id: req.session.sessionId},
+      json: true
+    };
+
+    request(logoutOptions, function (error, response, body) {
+      if(error || body["status_code"]===5) {
+        res.send("Ah jeez, can't log you out!");
+      }
+      else {
+        req.session.destroy(function (err) {
+          if(err) {
+            console.log(err);
+            res.send("AH, can't log out");
+          }
+          else {
+            res.redirect("/tonight");
+            console.log(body);
+          }
+        })
+      }
+    })
+  });
 
 // USER ROUTES
 
