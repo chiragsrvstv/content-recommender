@@ -1,9 +1,17 @@
 const express = require("express"),
   app = express(),
   bodyParser = require("body-parser"),
-  request = require("request");
+  request = require("request"),
+  session = require("express-session");
 
   "use strict"
+
+  // configuring express session
+  app.use(session({
+    secret: 'salty',
+    resave: false,
+    saveUninitialized: true,
+  }));
 
 // setting up server to respond requests at localhost:3000
 app.listen(3000, function() {
@@ -161,8 +169,10 @@ app.get("/tonight/login", function(req, res) {
     if(!error && response.statusCode==200) {
       console.log(body);
       requestToken = body["request_token"];
+      //req.session.reqToken = body["request_token"];
       // after generating a token, we redirect to TMDB to approve the generated token
       res.redirect('https://www.themoviedb.org/auth/access?request_token='+requestToken);
+
     }
     else {
       res.send("Ah, that's an error !");
@@ -190,9 +200,12 @@ app.get("/tonight/login", function(req, res) {
      if(!error && response.statusCode == 200) {
        console.log(body);
       // extracting the accessToken and accountId from the body
-       const accessToken = body["access_token"];
-       const accountId = body["account_id"];
-       res.redirect("/tonight/approved/"+ accessToken +"/"+accountId);
+       // const accessToken = body["access_token"];
+       // const accountId = body["account_id"];
+       req.session.accessToken = body["access_token"];
+       req.session.accountId = body["account_id"];
+       //res.redirect("/tonight/approved/"+ accessToken +"/"+accountId);
+       res.redirect("/tonight/approved/access");
       }
       else {
         res.send("Ah, that's an error !");
@@ -201,15 +214,17 @@ app.get("/tonight/login", function(req, res) {
  });
 
 // generating a sessionId
-app.get("/tonight/approved/:access/:account/", function (req, res) {
-  const accountId = req.params.account;
-  const accessToken = req.params.access;
+// app.get("/tonight/approved/:access/:account/", function (req, res) {
+  app.get("/tonight/approved/access", function (req, res) {
+  // const accountId = req.params.account;
+  // const accessToken = req.params.access;
+
   sessionIdOptions = {
     method: 'POST',
     url: 'https://api.themoviedb.org/3/authentication/session/convert/4',
     qs: {api_key: '***REMOVED***'},
     headers: {authorization: 'Bearer ***REMOVED***'},
-    body: {access_token: accessToken},
+    body: {access_token: req.session.accessToken},
     json: true
   };
 
@@ -217,13 +232,13 @@ app.get("/tonight/approved/:access/:account/", function (req, res) {
     if(error){
       console.log(error);
       res.send("Ah jeez, that's an error !");
-
     }
     else {
       console.log(body);
-      const sessionId = body["session_id"];
-      console.log(sessionId);
-      res.redirect("/tonight/approved/"+ accessToken +"/"+ accountId +"/"+sessionId+"/home/");
+      //const sessionId = body["session_id"];
+      req.session.sessionId = body["session_id"];
+      console.log(req.session.sessionId);
+      res.redirect("/tonight/approved/access/home/");
     }
   });
 
@@ -232,13 +247,14 @@ app.get("/tonight/approved/:access/:account/", function (req, res) {
 // USER ROUTES
 
 // user index route
-app.get("/tonight/approved/:access/:account/:session/home/", function (req, res) {
-  const accountId = req.params.account;
-  const sessionId = req.params.session;
-  const accessToken = req.params.access;
+//app.get("/tonight/approved/:access/:account/:session/home/", function (req, res) {
+  app.get("/tonight/approved/access/home/", function (req, res) {
+  // const accountId = req.params.account;
+  // const sessionId = req.params.session;
+  // const accessToken = req.params.access;
   favouriteMovieOptions = {
     method: 'GET',
-    url: 'https://api.themoviedb.org/4/account/'+ accountId +'/movie/rated',
+    url: 'https://api.themoviedb.org/4/account/'+ req.session.accountId +'/movie/rated',
     qs: {page: '1'},
     headers: {authorization: 'Bearer ***REMOVED***'},
     body: '{}'
@@ -251,20 +267,20 @@ app.get("/tonight/approved/:access/:account/:session/home/", function (req, res)
       res.send("Ah boo, that's an error !");
     }
     else {
-      res.render("user/userIndex.ejs", {favouriteMovies: favouriteMovies, sessionId: sessionId, accountId: accountId});
+      res.render("user/userIndex.ejs", {favouriteMovies: favouriteMovies});
     }
   })
 });
 
 // show user movie routes
-app.get("/tonight/approved/:account/:session/home/show/:id", function (req, res) {
+app.get("/tonight/approved/access/home/show/:id", function (req, res) {
   const id = req.params.id;
-  const sessionId = req.params.session;
-  const accountId = req.params.account;
+  // const sessionId = req.params.session;
+  // const accountId = req.params.account;
   showUserMovieOptions = {
     method: 'GET',
     url: 'https://api.themoviedb.org/3/movie/'+id,
-    qs: {api_key: '***REMOVED***', session_id: sessionId, append_to_response: "account_states" },
+    qs: {api_key: '***REMOVED***', session_id: req.session.sessionId, append_to_response: "account_states" },
     body:'{}',
     json: true
   };
@@ -275,24 +291,24 @@ app.get("/tonight/approved/:account/:session/home/show/:id", function (req, res)
     else {
       console.log(body);
       const content = body;
-      res.render("user/showMovies.ejs", {content: content, sessionId: sessionId, accountId: accountId});
+      res.render("user/showMovies.ejs", {content: content});
     }
   })
 });
 
 
 // ratings routes
-app.post("/tonight/approved/:account/:session/home/show/:id", function (req,res) {
+app.post("/tonight/approved/access/home/show/:id", function (req,res) {
   const ratings = req.body.ratings;
   const id = req.params.id;
-  const sessionId = req.params.session;
-  const accountId = req.params.account;
+  // const sessionId = req.params.session;
+  // const accountId = req.params.account;
   // const sessionid = req.params.
   console.log(ratings, id);
   ratingOptions = {
     method: 'POST',
     url: 'https://api.themoviedb.org/3/movie/'+id+'/rating',
-    qs: {session_id: sessionId, api_key:'***REMOVED***'},
+    qs: {session_id: req.session.sessionId, api_key:'***REMOVED***'},
     headers: { 'content-type': 'application/json;charset=utf-8' },
     body: {value: ratings},
     json: true
@@ -304,7 +320,7 @@ app.post("/tonight/approved/:account/:session/home/show/:id", function (req,res)
     }
     else{
       console.log("Rated");
-      res.redirect('/tonight/approved/'+accountId+'/'+sessionId+'/home/show/'+id);
+      res.redirect('/tonight/approved/access/home/show/'+id);
     }
   })
 });
