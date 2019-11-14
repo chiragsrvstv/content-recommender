@@ -2,12 +2,18 @@ const express = require("express"),
   app = express(),
   bodyParser = require("body-parser"),
   request = require("request"),
-  session = require("express-session");
+  session = require("express-session"),
+  redis   = require("redis");
+
+  let RedisStore = require('connect-redis')(session);
+  let redisClient = redis.createClient();
 
   "use strict"
 
   // configuring express session
-  app.use(session({
+  app.use(
+    session({
+    store: new RedisStore({client: redisClient}),
     secret: 'salty',
     resave: false,
     saveUninitialized: true,
