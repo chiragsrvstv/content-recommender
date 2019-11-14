@@ -3,10 +3,18 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   request = require("request"),
   session = require("express-session"),
-  redis   = require("redis");
+  redis   = require("redis"),
+  JwtStrategy = require("passport-jwt").Strategy,
+  ExtractJwt = require("passport-jwt").ExtractJwt;
 
+  // redis configuration
   let RedisStore = require('connect-redis')(session);
   let redisClient = redis.createClient();
+
+  //passport configuration
+  var opts = {}
+  opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+  opts.secretOrKey = 'salty';
 
   "use strict"
 
