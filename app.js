@@ -5,7 +5,8 @@ const express = require("express"),
   session = require("express-session"),
   redis   = require("redis"),
   JwtStrategy = require("passport-jwt").Strategy,
-  ExtractJwt = require("passport-jwt").ExtractJwt;
+  ExtractJwt = require("passport-jwt").ExtractJwt,
+  rp          = require("request-promise");
 
   // redis configuration
   let RedisStore = require('connect-redis')(session);
@@ -288,6 +289,41 @@ app.get("/tonight/login", function(req, res) {
   });
 
 // USER ROUTES
+//
+// async function getUser(err,resp,bod){
+//   if(!err){
+//     console.log(bod);
+//   }
+//   else {
+//     res.send("error error");
+//   }
+// };
+
+// async function getUser(url) {
+//   const ur={
+//     method: "GET",
+//     url: url,
+//     headers: {authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MGRjNTE3MTc2NTg1YTAzYzM0OGM5M2FmZGQ3MDEyNiIsInN1YiI6IjVkODM5NzVhOWU0NTg2MDIzZjk1MjhjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9O7f4lThGGXu7OKWrlo7kvZS3rMozSecTSQnVJRvoSQ'},
+//     json:true
+//   };
+//   //promise
+//   const response = await request(ur);
+//   const resulr = response.body
+//
+//   })
+//   return new Promise(function(resolve, reject) {
+//     // do sync
+//     request(ur, function (err, resp, bod) {
+//       if(err){
+//         reject(err);
+//       }
+//       else {
+//         resolve(bod);
+//       }
+//     })
+//   })
+// }
+
 
 // user index route
 //app.get("/tonight/approved/:access/:account/:session/home/", function (req, res) {
@@ -306,13 +342,43 @@ app.get("/tonight/login", function(req, res) {
   request(favouriteMovieOptions, function (error, response, body) {
     const favouriteMovies = JSON.parse(body);
     console.log(favouriteMovies);
+    const ur={
+      method: "GET",
+      url:'https://api.themoviedb.org/3/account?api_key=90dc517176585a03c348c93afdd70126',
+      headers: {authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MGRjNTE3MTc2NTg1YTAzYzM0OGM5M2FmZGQ3MDEyNiIsInN1YiI6IjVkODM5NzVhOWU0NTg2MDIzZjk1MjhjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9O7f4lThGGXu7OKWrlo7kvZS3rMozSecTSQnVJRvoSQ'},
+      qs:{session_id:req.session.sessionId},
+      json:true
+    };
     if(error) {
       res.send("Ah boo, that's an error !");
     }
     else {
-      res.render("user/userIndex.ejs", {favouriteMovies: favouriteMovies});
-    }
-  })
+      // requesting username with promises
+      rp(ur)
+        .then(function(repos){
+          console.log(repos);
+          res.render("user/userIndex.ejs", {favouriteMovies: favouriteMovies, user: repos});
+        })
+        .catch(function (err) {
+          console.log("ah no, login first");
+          res.redirect("/");
+        })
+
+
+        //const user = nuser["username"];
+        //console.log("last"+user);
+        // request(ur, getUser());
+      //   const usern = async function(){
+      //   let user = await getUser('https://api.themoviedb.org/4/account/'+req.session.accountId+'?api_key=90dc517176585a03c348c93afdd70126');
+      //   console.log(user);
+      // }
+        // const user = getUser.then(function (result) {
+        //   console.log(result);
+        //   return result;
+        // })
+
+      }
+    })
 });
 
 // show user movie routes
