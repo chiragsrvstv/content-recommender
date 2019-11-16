@@ -4,7 +4,6 @@
   <h1> The movies page </h1>
 
 
-  <div>
     <h2> Mood </h2>
     <form class="" action="/tonight/movies/moviesresults" method="POST">
       <input type="radio" name="genre" value="35, 10749">
@@ -13,63 +12,53 @@
       <label> Uplifting </label>
       <input type="radio" name="genre" value="18, 53, 80">
       <label> Thrilling </label>
-  </div>
 
   <!-- form that posts genres selected by user -->
   <h2> Genres </h2>
   <form class="" action="/tonight/movies/moviesresults" method="post">
-      <div class="ui checkbox">
-        <input type="checkbox" name="genre" value="12">
-        <label> Adventure </label>
-      </div>
-      <div class="ui checkbox">
-        <input type="checkbox" name="genre" value="28">
-        <label> Action </label>
-      </div>
-      <div class="ui checkbox">
-        <input type="checkbox" name="genre" value="18">
-        <label> Drama </label>
-      </div>
-      <div class="ui checkbox">
-        <input type="checkbox" name="genre" value="35">
-        <label> Comedy </label>
-      </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="53">
-      <label> Thriller </label>
+    <div class="container">
+      <ul class="ks-cboxtags">
+        <li> <input type="checkbox" id="checkboxOne" name="genre" value="12">
+          <label for="checkboxOne"> Adventure </label>
+        </li>
+        <li> <input type="checkbox" id="checkboxTwo" name="genre" value="28">
+          <label for="checkboxTwo"> Action </label>
+        </li>
+        <li> <input type="checkbox" id="checkboxThree" name="genre" value="18">
+          <label for="checkboxThree"> Drama </label>
+        </li>
+        <li> <input type="checkbox" id="checkboxFour"  name="genre" value="35">
+          <label for="checkboxFour"> Comedy </label>
+        </li>
+        <li> <input type="checkbox" id="checkboxFive" name="genre" value="53">
+          <label for="checkboxFive"> Thriller </label>
+        </li>
+        <li> <input type="checkbox" id="checkboxSix" name="genre" value="27">
+          <label for="checkboxSix"> Horror </label>
+        </li>
+        <li> <input type="checkbox" id="checkboxSeven" name="genre" value="10749">
+          <label for="checkboxSeven"> Romance </label>
+        </li>
+        <li> <input type="checkbox" id="checkboxEight" name="genre" value="10751">
+          <label for="checkboxEight"> Family </label>
+        </li>
+        <li> <input type="checkbox" id="checkboxNine" name="genre" value="10402">
+          <label for="checkboxNine"> Music </label>
+        </li>
+        <li> <input type="checkbox" id="checkboxTen" name="genre" value="80">
+          <label for="checkboxTen"> Crime </label>
+        </li>
+        <li class="ks-selected"> <input type="checkbox" id="checkboxEleven" name="genre" value="878">
+          <label for="checkboxEleven"> Science Fiction </label>
+        </li>
+        <li> <input type="checkbox" id="checkboxTwelve" name="genre" value="99">
+          <label for="checkboxTwelve"> Documentary </label>
+        </li>
+      </ul>
     </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="27">
-      <label> Horror </label>
-    </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="10749">
-      <label> Romance </label>
-    </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="10751">
-      <label> Family </label>
-    </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="10402">
-      <label> Music </label>
-    </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="80">
-      <label> Crime </label>
-    </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="878">
-      <label> Science Fiction </label>
-    </div>
-    <div class="ui checkbox">
-      <input type="checkbox" name="genre" value="99">
-      <label> Documentary </label>
-    </div>
-    <div>
     <button class="positive ui button"> Recommend A Movie ! </button>
-    </div>
   </form>
+
 
 <!-- displaying list of popular movies from the response by the api -->
   <h2> The most popular movies of this year 😇 </h2>
