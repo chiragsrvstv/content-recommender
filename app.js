@@ -223,7 +223,7 @@ app.get("/tonight/login", function(req, res) {
        res.redirect("/tonight/approved/access");
       }
       else {
-        res.send("Ah, that's an error !");
+        res.send("Ah 2, that's an error !");
       }
    });
  });
@@ -331,18 +331,19 @@ app.get("/tonight/login", function(req, res) {
   // const accountId = req.params.account;
   // const sessionId = req.params.session;
   // const accessToken = req.params.access;
-  favouriteMovieOptions = {
+  recommendedMovieOptions = {
     method: 'GET',
-    url: 'https://api.themoviedb.org/4/account/'+ req.session.accountId +'/movie/rated',
+    url: 'https://api.themoviedb.org/4/account/'+ req.session.accountId +'/movie/recommendations',
     qs: {page: '1'},
     headers: {authorization: 'Bearer ***REMOVED***'},
-    body: '{}'
+    body: '{}',
+    json: true
   };
 
-  request(favouriteMovieOptions, function (error, response, body) {
-    const favouriteMovies = JSON.parse(body);
-    console.log(favouriteMovies);
-    const ur={
+  request(recommendedMovieOptions, function (error, response, body) {
+    const recommendedMovies = body;
+    console.log(recommendedMovies);
+    const accountDetailsOptions={
       method: "GET",
       url:'https://api.themoviedb.org/3/account?api_key=***REMOVED***',
       headers: {authorization: 'Bearer ***REMOVED***'},
@@ -354,10 +355,10 @@ app.get("/tonight/login", function(req, res) {
     }
     else {
       // requesting username with promises
-      rp(ur)
+      rp(accountDetailsOptions)
         .then(function(repos){
           console.log(repos);
-          res.render("user/userIndex.ejs", {favouriteMovies: favouriteMovies, user: repos});
+          res.render("user/userIndex.ejs", {recommendedMovies: recommendedMovies, user: repos});
         })
         .catch(function (err) {
           console.log("ah no, login first");

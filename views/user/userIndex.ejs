@@ -2,10 +2,12 @@
 <h1> Welcome <%=user["username"]%> </h1>
 
 <div class=" ui container">
-  <div class="ui header"> Here are your favourite movies </div>
+  <div class="ui header"> Specially curated movies for you</div>
   <div class="ui link cards">
 
-    <% favouriteMovies["results"].forEach(function(movie) { %>
+    <% if (recommendedMovies["results"] != null){ %>
+
+    <% recommendedMovies["results"].forEach(function(movie) { %>
     <a class="card" href="/tonight/approved/access/home/show/<%= movie.id %>">
     <div class="image">
   <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
@@ -17,6 +19,7 @@
 </div>
 </a>
   <% }); %>
+<% } %>
 </div>
 
 
