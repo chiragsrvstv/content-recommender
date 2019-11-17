@@ -289,64 +289,28 @@ app.get("/tonight/login", function(req, res) {
   });
 
 // USER ROUTES
-//
-// async function getUser(err,resp,bod){
-//   if(!err){
-//     console.log(bod);
-//   }
-//   else {
-//     res.send("error error");
-//   }
-// };
-
-// async function getUser(url) {
-//   const ur={
-//     method: "GET",
-//     url: url,
-//     headers: {authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MGRjNTE3MTc2NTg1YTAzYzM0OGM5M2FmZGQ3MDEyNiIsInN1YiI6IjVkODM5NzVhOWU0NTg2MDIzZjk1MjhjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9O7f4lThGGXu7OKWrlo7kvZS3rMozSecTSQnVJRvoSQ'},
-//     json:true
-//   };
-//   //promise
-//   const response = await request(ur);
-//   const resulr = response.body
-//
-//   })
-//   return new Promise(function(resolve, reject) {
-//     // do sync
-//     request(ur, function (err, resp, bod) {
-//       if(err){
-//         reject(err);
-//       }
-//       else {
-//         resolve(bod);
-//       }
-//     })
-//   })
-// }
-
 
 // user index route
-//app.get("/tonight/approved/:access/:account/:session/home/", function (req, res) {
-  app.get("/tonight/approved/access/home/", function (req, res) {
-  // const accountId = req.params.account;
-  // const sessionId = req.params.session;
-  // const accessToken = req.params.access;
+app.get("/tonight/approved/access/home/", function (req, res) {
   recommendedMovieOptions = {
     method: 'GET',
     url: 'https://api.themoviedb.org/4/account/'+ req.session.accountId +'/movie/recommendations',
     qs: {page: '1'},
-    headers: {authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MGRjNTE3MTc2NTg1YTAzYzM0OGM5M2FmZGQ3MDEyNiIsInN1YiI6IjVkODM5NzVhOWU0NTg2MDIzZjk1MjhjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9O7f4lThGGXu7OKWrlo7kvZS3rMozSecTSQnVJRvoSQ'},
-    body: '{}',
+    headers: {
+      authorization: 'Bearer ' + req.session.accessToken,
+      'Content-Type': 'application/json'
+    },
     json: true
   };
-
   request(recommendedMovieOptions, function (error, response, body) {
     const recommendedMovies = body;
     console.log(recommendedMovies);
+
+    //getting account details
     const accountDetailsOptions={
       method: "GET",
       url:'https://api.themoviedb.org/3/account?api_key=90dc517176585a03c348c93afdd70126',
-      headers: {authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MGRjNTE3MTc2NTg1YTAzYzM0OGM5M2FmZGQ3MDEyNiIsInN1YiI6IjVkODM5NzVhOWU0NTg2MDIzZjk1MjhjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9O7f4lThGGXu7OKWrlo7kvZS3rMozSecTSQnVJRvoSQ'},
+      headers: {authorization: 'Bearer ' + req.session.accessToken},
       qs:{session_id:req.session.sessionId},
       json:true
     };
@@ -364,20 +328,6 @@ app.get("/tonight/login", function(req, res) {
           console.log("ah no, login first");
           res.redirect("/");
         })
-
-
-        //const user = nuser["username"];
-        //console.log("last"+user);
-        // request(ur, getUser());
-      //   const usern = async function(){
-      //   let user = await getUser('https://api.themoviedb.org/4/account/'+req.session.accountId+'?api_key=90dc517176585a03c348c93afdd70126');
-      //   console.log(user);
-      // }
-        // const user = getUser.then(function (result) {
-        //   console.log(result);
-        //   return result;
-        // })
-
       }
     })
 });
