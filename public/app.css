@@ -46,7 +46,7 @@ a {
   transform: translate(-50%, -50%);
   color: white;
 }
-.container {
+.genre-container {
     max-width: 640px;
     font-family: FontAwesome 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 13px;
