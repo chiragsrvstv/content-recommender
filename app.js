@@ -386,6 +386,6 @@ app.post("/tonight/approved/access/home/show/:id", function (req,res) {
 });
 
 // bad url handler
-app.get("/*", function(req, res) {
-  res.send("Error 404: You're in outer space now! 👽");
-});
+// app.get("/*", function(req, res) {
+//   res.send("Error 404: You're in outer space now! 👽");
+// });
