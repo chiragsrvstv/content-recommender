@@ -15,6 +15,7 @@ body {
   width: 100%;
   height: 100%;
   margin: 0;
+  font: 1.0em 'Patua One', cursive;
   /* height: 500px; */
 }
 
@@ -67,7 +68,7 @@ ul.ks-cboxtags li{
 }
 ul.ks-cboxtags li label{
     display: inline-block;
-    background-color: rgba(255, 255, 255, .9);
+    background-color: #373737;
     border: 2px solid rgba(139, 139, 139, .3);
     color: #adadad;
     border-radius: 25px;
@@ -85,6 +86,7 @@ ul.ks-cboxtags li label{
 ul.ks-cboxtags li label {
     padding: 8px 12px;
     cursor: pointer;
+    font-size: 1.5em;
 }
 
 ul.ks-cboxtags li label::before {
@@ -217,4 +219,15 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
 @keyframes fade {
   from {opacity: .4}
   to {opacity: 1}
+}
+.carousel-images {
+  width: 100%;
+  height: 350px;
+}
+
+//checkbox
+
+
+.ui.toggle.checkbox .box, .ui.toggle.checkbox label {
+  color: white;
 }
