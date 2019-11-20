@@ -1,7 +1,7 @@
 <% include partials/header.ejs %>
 
 <div class="ui container">
-  <h1> The movies page </h1>
+
 
   <!-- carousel -->
   <div class="slideshow-container">
@@ -9,17 +9,17 @@
   <!-- Full-width images with number and caption text -->
   <div class="mySlides fade">
     <div class="numbertext">1 / 3</div>
-    <img src="https://image.tmdb.org/t/p/original<%=data["results"][0].poster_path%>">
+    <img class="carousel-images" src="https://image.tmdb.org/t/p/original<%=data["results"][0].poster_path%>">
   </div>
 
   <div class="mySlides fade">
     <div class="numbertext">2 / 3</div>
-    <img src="https://image.tmdb.org/t/p/original<%=data["results"][1].poster_path%>">
+    <img class="carousel-images" src="https://image.tmdb.org/t/p/original<%=data["results"][1].poster_path%>">
   </div>
 
   <div class="mySlides fade">
     <div class="numbertext">3 / 3</div>
-    <img src="https://image.tmdb.org/t/p/original<%=data["results"][2].poster_path%>">
+    <img class="carousel-images" src="https://image.tmdb.org/t/p/original<%=data["results"][2].poster_path%>">
   </div>
 
   <!-- Next and previous buttons -->
@@ -35,34 +35,23 @@
   <span class="dot" onclick="currentSlide(3)"></span>
 </div>
 
+<h1> What are you gonna watch tonight ? </h1>
 
-  <!-- displaying list of popular movies from the response by the api -->
-    <h2> The most popular movies of this year 😇 </h2>
-    <div class="ui link cards">
-    <% data["results"].forEach(function(movie){ %>
-      <a class="card" href="/tonight/movies/show/<%=movie.id %>">
-        <div class="image">
-          <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
-        </div>
-
-      </a>
-
-
-    <% }); %>
-      </div>
-
-
-    <h2> Mood </h2>
-    <form class="" action="/tonight/movies/moviesresults" method="POST">
+      <form class="" action="/tonight/movies/moviesresults" method="POST">
+      <div class="ui card ">
       <input type="radio" name="genre" value="35, 10749">
-      <label> Easy </label>
+      <label class="ui blue huge circular label"> Easy </label>
+      </div>
+      <div class="ui card">
       <input type="radio" name="genre" value="10751, 35, 12">
-      <label> Uplifting </label>
+      <label class="ui pink huge circular label"> Uplifting </label>
+      </div>
+      <div class="ui card">
       <input type="radio" name="genre" value="18, 53, 80">
-      <label> Thrilling </label>
-
+      <label class="ui red huge circular label"> Thrilling </label>
+    </div>
   <!-- form that posts genres selected by user -->
-  <h2> Genres </h2>
+
   <form class="" action="/tonight/movies/moviesresults" method="post">
     <div class="genre-container">
       <ul class="ks-cboxtags">
@@ -104,8 +93,25 @@
         </li>
       </ul>
     </div>
-    <button class="positive ui button"> Recommend A Movie ! </button>
+    <button class="ui huge positive button"> Recommend A Movie ! </button>
   </form>
+
+
+  <!-- displaying list of popular movies from the response by the api -->
+    <h1> Trending Movies </h1>
+    <div class="ui link cards">
+    <% data["results"].forEach(function(movie){ %>
+      <a class="card" href="/tonight/movies/show/<%=movie.id %>">
+        <div class="image">
+          <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
+        </div>
+
+      </a>
+
+
+    <% }); %>
+      </div>
+
 
 
   </div>
