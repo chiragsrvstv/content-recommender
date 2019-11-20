@@ -28,7 +28,7 @@ application is just for you.
 6. Similarly install other dependencies required for this project using npm from `package.json`
 7. Now run `redis-server` to start the redis server.
 8. Now run `node app.js`
-9. Then go to localhost:3000 from any web browser to view the home page of the app.
+9. Then go to `localhost:3000` from any web browser to view the home page of the app.
 
 <br />
 <br />
