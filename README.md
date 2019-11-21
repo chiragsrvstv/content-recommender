@@ -31,13 +31,11 @@ application is just for you.
 9. Then go to `localhost:3000` from any web browser to view the home page of the app.
 
 <<<<<<< HEAD
-=======
 ## License
 [MIT License](https://github.com/chiragsrvstv/contentRecommendation/blob/master/LICENSE) <br />
 Copyright (c) 2019 Chirag Srivastava
 
 
->>>>>>> origin/master
 <br />
 <br />
 <sup> Powered by www.themoviedb.org </sup>
