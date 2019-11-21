@@ -30,6 +30,11 @@ application is just for you.
 8. Now run `node app.js`
 9. Then go to `localhost:3000` from any web browser to view the home page of the app.
 
+## License
+[MIT License](https://github.com/chiragsrvstv/contentRecommendation/blob/master/LICENSE) <br />
+Copyright (c) 2019 Chirag Srivastava
+
+
 <br />
 <br />
 <sup> Powered by www.themoviedb.org </sup>
