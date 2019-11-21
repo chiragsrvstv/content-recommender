@@ -6,7 +6,8 @@ const express = require("express"),
   redis   = require("redis"),
   JwtStrategy = require("passport-jwt").Strategy,
   ExtractJwt = require("passport-jwt").ExtractJwt,
-  rp          = require("request-promise");
+  rp          = require("request-promise"),
+  config      = require("./config");
 
   // redis configuration
   let RedisStore = require('connect-redis')(session);
@@ -48,6 +49,10 @@ function randomGenres(genresList) {
   return generatedList;
 }
 
+// API configs
+const apiKey = config.api_key;
+const bearerAuth    = config.auth;
+
 //-----------------------routes--------------------------------
 
 // landing Page
@@ -62,11 +67,11 @@ app.get("/tonight", function(req, res) {
 
 // movies route and api connection
 app.get("/tonight/movies", function(req, res) {
-  key = "***REMOVED***";
+
 
   // making api request for popular movies
   const movieRequest =
-    "https://api.themoviedb.org/3/discover/movie?api_key=***REMOVED***&language=en-US&sort_by=popularity.desc&region=IN&year=2019&include_adult=true&include_video=false&page=1";
+    "https://api.themoviedb.org/3/discover/movie?api_key="+apiKey+"&language=en-US&sort_by=popularity.desc&region=IN&year=2019&include_adult=true&include_video=false&page=1";
   request(movieRequest, function(error, response, body) {
     if (!error && response.statusCode == 200) {
       const data = JSON.parse(body);
@@ -87,7 +92,7 @@ app.post("/tonight/movies/moviesresults", function(req, res) {
   }
   // // making api request for top_rated movies results
   const movieResultsRequest =
-    "https://api.themoviedb.org/3/movie/top_rated?api_key=***REMOVED***&language=en-US&region=US&include_adult=true&include_video=false&page=1&with_genres=" +
+    "https://api.themoviedb.org/3/movie/top_rated?api_key="+apiKey+"&language=en-US&region=US&include_adult=true&include_video=false&page=1&with_genres=" +
     genres;
   request(movieResultsRequest, function(error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -101,7 +106,7 @@ app.post("/tonight/movies/moviesresults", function(req, res) {
 app.get("/tonight/tvseries", function(req, res) {
   // making api request for popular tv shows
   const tvRequest =
-    "https://api.themoviedb.org/3/discover/tv?api_key=***REMOVED***&language=en-US&region=IN&sort_by=popularity.desc&page=1&include_null_first_air_dates=false";
+    "https://api.themoviedb.org/3/discover/tv?api_key="+apiKey+"&language=en-US&region=IN&sort_by=popularity.desc&page=1&include_null_first_air_dates=false";
   request(tvRequest, function(error, response, body) {
     if (!error && response.statusCode == 200) {
       const data = JSON.parse(body);
@@ -123,7 +128,7 @@ app.post("/tonight/tvseries/tvresults", function(req, res) {
 
   // making api request for popular tv shows
   const tvResultsRequest =
-    "https://api.themoviedb.org/3/discover/tv?api_key=***REMOVED***&language=en-US&region=IN,US&sort_by=popularity.desc&include_null_first_air_dates=false&with_genres=" +
+    "https://api.themoviedb.org/3/discover/tv?api_key="+apiKey+"&language=en-US&region=IN,US&sort_by=popularity.desc&include_null_first_air_dates=false&with_genres=" +
     genres;
   request(tvResultsRequest, function(error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -136,7 +141,7 @@ app.post("/tonight/tvseries/tvresults", function(req, res) {
 app.get("/tonight/movies/show/:id", function(req, res) {
   id = req.params.id;
   const showRequest =
-    "https://api.themoviedb.org/3/movie/" + id + "?api_key=***REMOVED***&language=en-US"
+    "https://api.themoviedb.org/3/movie/" + id + "?api_key="+apiKey+"&language=en-US"
     request(showRequest, function (error, response, body) {
       if(!error && response.statusCode==200) {
         const foundContent = JSON.parse(body);
@@ -150,7 +155,7 @@ app.get("/tonight/movies/show/:id", function(req, res) {
 app.get("/tonight/tvseries/show/:id", function(req, res) {
   id = req.params.id
   const showRequest =
-    "https://api.themoviedb.org/3/tv/"+ id +"?api_key=***REMOVED***&language=en-US"
+    "https://api.themoviedb.org/3/tv/"+ id +"?api_key="+apiKey+"&language=en-US"
     request(showRequest, function (error, response, body) {
       if(!error && response.statusCode==200) {
         const foundContent = JSON.parse(body);
@@ -172,7 +177,7 @@ app.get("/tonight/login", function(req, res) {
     url: "https://api.themoviedb.org/4/auth/request_token",
     headers: {
       // its the API Read Access token found under API settings(new in v4)
-      authorization: 'Bearer ***REMOVED***',
+      authorization: bearerAuth,
       'content-type': "application/json;charset=utf-8"
       },
       // redirecting to our app after TMDB approves our token
@@ -203,7 +208,7 @@ app.get("/tonight/login", function(req, res) {
      url: "https://api.themoviedb.org/4/auth/access_token",
      headers: {
        // its the API Read Access token found under API settings(new in v4)
-       authorization: 'Bearer ***REMOVED***',
+       authorization: bearerAuth,
        'content-type': "application/json;charset=utf-8"
        },
        // passing the previously generated request token in the body
@@ -237,8 +242,8 @@ app.get("/tonight/login", function(req, res) {
   sessionIdOptions = {
     method: 'POST',
     url: 'https://api.themoviedb.org/3/authentication/session/convert/4',
-    qs: {api_key: '***REMOVED***'},
-    headers: {authorization: 'Bearer ***REMOVED***'},
+    qs: {api_key: +apiKey},
+    headers: {authorization: bearerAuth},
     body: {access_token: req.session.accessToken},
     json: true
   };
@@ -264,7 +269,7 @@ app.get("/tonight/login", function(req, res) {
       method: 'DELETE',
       url: 'https://api.themoviedb.org/3/authentication/session',
       headers: {'content-type': 'application/json;charset=utf-8'},
-      qs: {api_key: '***REMOVED***'},
+      qs: {api_key: apiKey},
       body: {session_id: req.session.sessionId},
       json: true
     };
@@ -309,7 +314,7 @@ app.get("/tonight/approved/access/home/", function (req, res) {
     //getting account details
     const accountDetailsOptions={
       method: "GET",
-      url:'https://api.themoviedb.org/3/account?api_key=***REMOVED***',
+      url:'https://api.themoviedb.org/3/account?api_key='+apiKey+'',
       headers: {authorization: 'Bearer ' + req.session.accessToken},
       qs:{session_id:req.session.sessionId},
       json:true
@@ -340,7 +345,7 @@ app.get("/tonight/approved/access/home/show/:id", function (req, res) {
   showUserMovieOptions = {
     method: 'GET',
     url: 'https://api.themoviedb.org/3/movie/'+id,
-    qs: {api_key: '***REMOVED***', session_id: req.session.sessionId, append_to_response: "account_states" },
+    qs: {api_key: apiKey, session_id: req.session.sessionId, append_to_response: "account_states" },
     body:'{}',
     json: true
   };
@@ -368,7 +373,7 @@ app.post("/tonight/approved/access/home/show/:id", function (req,res) {
   ratingOptions = {
     method: 'POST',
     url: 'https://api.themoviedb.org/3/movie/'+id+'/rating',
-    qs: {session_id: req.session.sessionId, api_key:'***REMOVED***'},
+    qs: {session_id: req.session.sessionId, api_key: apiKey},
     headers: { 'content-type': 'application/json;charset=utf-8' },
     body: {value: ratings},
     json: true
