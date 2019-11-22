@@ -17,7 +17,7 @@ application is just for you.
 5. Similarly install other dependencies required for this project using npm from `package.json`
 6. Now run `redis-server` to start the redis server.
 7. Now run `node app.js`
-8. Then go to localhost:3000 from any web browser to view the home page of the app.
+8. Then go to `localhost:3000` from any web browser to view the home page of the app.
 
 ### Windows
 1. Install GitBash for windows to run linux type bash terminal, for help visit: https://git-scm.com/downloads
@@ -29,8 +29,12 @@ application is just for you.
 7. Now run `redis-server` to start the redis server.
 8. Now run `node app.js`
 9. Then go to `localhost:3000` from any web browser to view the home page of the app.
+<br />
 
-<<<<<<< HEAD
+This application requires an API key to send requests to the The MovieDB database. <br />
+To get an API key and Access Token, register on TMDB and follow this guide: <br />
+https://www.themoviedb.org/documentation/api <br />
+
 ## License
 [MIT License](https://github.com/chiragsrvstv/contentRecommendation/blob/master/LICENSE) <br />
 Copyright (c) 2019 Chirag Srivastava
