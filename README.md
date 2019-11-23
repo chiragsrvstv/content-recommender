@@ -31,9 +31,11 @@ application is just for you.
 9. Then go to `localhost:3000` from any web browser to view the home page of the app.
 <br />
 
-This application requires an API key to send requests to the The MovieDB database. <br />
+This application requires an API key to send requests to the The MovieDB database.
+Place your API key and Authorization Access Token in file named `config.js`<br />
 To get an API key and Access Token, register on TMDB and follow this guide: <br />
 https://www.themoviedb.org/documentation/api <br />
+https://developers.themoviedb.org/3/getting-started/introduction <br />
 
 ## License
 [MIT License](https://github.com/chiragsrvstv/contentRecommendation/blob/master/LICENSE) <br />
