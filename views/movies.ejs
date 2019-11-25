@@ -91,16 +91,13 @@
     <div class="eight wide column grid">
       <form class="" action="/tonight/movies/moviesresults" method="POST">
       <div class="ui card ">
-      <input type="radio" name="genre" value="35, 10749">
-      <label class="ui blue huge circular label"> Easy </label>
+      <label class="ui blue huge circular label"> <input type="radio" name="genre" value="35, 10749"> Easy </label>
       </div>
       <div class="ui card">
-      <input type="radio" name="genre" value="10751, 35, 12">
-      <label class="ui pink huge circular label"> Uplifting </label>
+      <label class="ui pink huge circular label"> <input type="radio" name="genre" value="10751, 35, 12"> Uplifiting </label>
       </div>
       <div class="ui card">
-      <input type="radio" name="genre" value="18, 53, 80">
-      <label class="ui red huge circular label"> Thrilling </label>
+      <label class="ui red huge circular label"> <input type="radio" name="genre" value="18, 53, 80"> Thrilling </label>
       </div>
     </div>
   <!-- form that posts genres selected by user -->
@@ -109,7 +106,7 @@
 
   <!-- displaying list of popular movies from the response by the api -->
     <h1> Trending Movies </h1>
-    <div class="ui link cards">
+    <div class="ui four wide link cards">
     <% data["results"].forEach(function(movie){ %>
       <a class="card" href="/tonight/movies/show/<%=movie.id %>">
         <div class="image">
