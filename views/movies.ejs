@@ -1,10 +1,10 @@
 <% include partials/header.ejs %>
 
-<div class="ui container">
+<div class="ui grid container">
 
 
   <!-- carousel -->
-  <div class="slideshow-container">
+  <div class="sixteen wide column slideshow-container">
 
   <!-- Full-width images with number and caption text -->
   <div class="mySlides fade">
@@ -35,23 +35,12 @@
   <span class="dot" onclick="currentSlide(3)"></span>
 </div>
 
+<div class="sixteen wide column grid">
 <h1> What are you gonna watch tonight ? </h1>
+</div>
 
-      <form class="" action="/tonight/movies/moviesresults" method="POST">
-      <div class="ui card ">
-      <input type="radio" name="genre" value="35, 10749">
-      <label class="ui blue huge circular label"> Easy </label>
-      </div>
-      <div class="ui card">
-      <input type="radio" name="genre" value="10751, 35, 12">
-      <label class="ui pink huge circular label"> Uplifting </label>
-      </div>
-      <div class="ui card">
-      <input type="radio" name="genre" value="18, 53, 80">
-      <label class="ui red huge circular label"> Thrilling </label>
-    </div>
-  <!-- form that posts genres selected by user -->
 
+<div class="eight wide column">
   <form class="" action="/tonight/movies/moviesresults" method="post">
     <div class="genre-container">
       <ul class="ks-cboxtags">
@@ -93,8 +82,29 @@
         </li>
       </ul>
     </div>
+    <div class="five wide column">
     <button class="ui huge positive button"> Recommend A Movie ! </button>
-  </form>
+</div>  </form>
+</div>
+
+<!-- form that posts mood selected by user -->
+    <div class="eight wide column grid">
+      <form class="" action="/tonight/movies/moviesresults" method="POST">
+      <div class="ui card ">
+      <input type="radio" name="genre" value="35, 10749">
+      <label class="ui blue huge circular label"> Easy </label>
+      </div>
+      <div class="ui card">
+      <input type="radio" name="genre" value="10751, 35, 12">
+      <label class="ui pink huge circular label"> Uplifting </label>
+      </div>
+      <div class="ui card">
+      <input type="radio" name="genre" value="18, 53, 80">
+      <label class="ui red huge circular label"> Thrilling </label>
+      </div>
+    </div>
+  <!-- form that posts genres selected by user -->
+
 
 
   <!-- displaying list of popular movies from the response by the api -->
