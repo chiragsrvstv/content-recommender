@@ -53,6 +53,16 @@ function randomGenres(genresList) {
 const apiKey = config.api_key;
 const bearerAuth    = config.auth;
 
+//middleware to chek sessions
+isLoggedIn = (req,res,next) => {
+  if(req.session.sessionId){
+    return next();
+  }
+  else {
+    res.redirect("/tonight/login");
+  }
+}
+
 //-----------------------routes--------------------------------
 
 // landing Page
@@ -296,7 +306,7 @@ app.get("/tonight/login", function(req, res) {
 // USER ROUTES
 
 // user index route
-app.get("/tonight/approved/access/home/", function (req, res) {
+app.get("/tonight/approved/access/home/", isLoggedIn ,function (req, res) {
   recommendedMovieOptions = {
     method: 'GET',
     url: 'https://api.themoviedb.org/4/account/'+ req.session.accountId +'/movie/recommendations',
@@ -338,7 +348,7 @@ app.get("/tonight/approved/access/home/", function (req, res) {
 });
 
 // show user movie routes
-app.get("/tonight/approved/access/home/show/:id", function (req, res) {
+app.get("/tonight/approved/access/home/show/:id", isLoggedIn ,function (req, res) {
   const id = req.params.id;
   // const sessionId = req.params.session;
   // const accountId = req.params.account;
@@ -363,7 +373,7 @@ app.get("/tonight/approved/access/home/show/:id", function (req, res) {
 
 
 // ratings routes
-app.post("/tonight/approved/access/home/show/:id", function (req,res) {
+app.post("/tonight/approved/access/home/show/:id", isLoggedIn ,function (req,res) {
   const ratings = req.body.ratings;
   const id = req.params.id;
   // const sessionId = req.params.session;

@@ -1,4 +1,6 @@
 <% include ../partials/user/header %>
+
+
 <h1> Welcome <%=user["username"]%> </h1>
 
 <div class=" ui container">
@@ -11,11 +13,6 @@
     <a class="card" href="/tonight/approved/access/home/show/<%= movie.id %>">
     <div class="image">
   <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
-</div>
-  <div class="content">
-    <div class="header">
-      <p> <%= movie.title %> </p>
-</div>
 </div>
 </a>
   <% }); %>
