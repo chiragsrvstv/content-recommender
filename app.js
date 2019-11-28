@@ -268,7 +268,25 @@ app.get("/tonight/login", function(req, res) {
       //const sessionId = body["session_id"];
       req.session.sessionId = body["session_id"];
       console.log(req.session.sessionId);
-      res.redirect("/tonight/approved/access/home/");
+
+      //getting account details
+      const accountDetailsOptions={
+        method: "GET",
+        url:'https://api.themoviedb.org/3/account?api_key='+apiKey+'',
+        headers: {authorization: 'Bearer ' + req.session.accessToken},
+        qs:{session_id:req.session.sessionId},
+        json:true
+      };
+      // requesting username with promises
+      rp(accountDetailsOptions)
+        .then(function(repos){
+          // extracting username from respos and parsing it to the url
+          res.redirect("/tonight/approved/access/"+repos.username);
+        })
+        .catch(function (err) {
+          console.log("ah no, login first");
+          res.redirect("/");
+        });
     }
   });
 });
@@ -306,7 +324,8 @@ app.get("/tonight/login", function(req, res) {
 // USER ROUTES
 
 // user index route
-app.get("/tonight/approved/access/home/", isLoggedIn ,function (req, res) {
+app.get("/tonight/approved/access/:user", isLoggedIn ,function (req, res) {
+  const user = req.params.user;
   recommendedMovieOptions = {
     method: 'GET',
     url: 'https://api.themoviedb.org/4/account/'+ req.session.accountId +'/movie/recommendations',
@@ -320,36 +339,22 @@ app.get("/tonight/approved/access/home/", isLoggedIn ,function (req, res) {
   request(recommendedMovieOptions, function (error, response, body) {
     const recommendedMovies = body;
     console.log(recommendedMovies);
-
-    //getting account details
-    const accountDetailsOptions={
-      method: "GET",
-      url:'https://api.themoviedb.org/3/account?api_key='+apiKey+'',
-      headers: {authorization: 'Bearer ' + req.session.accessToken},
-      qs:{session_id:req.session.sessionId},
-      json:true
-    };
     if(error) {
       res.send("Ah boo, that's an error !");
     }
     else {
-      // requesting username with promises
-      rp(accountDetailsOptions)
-        .then(function(repos){
-          console.log(repos);
-          res.render("user/userIndex.ejs", {recommendedMovies: recommendedMovies, user: repos});
-        })
-        .catch(function (err) {
-          console.log("ah no, login first");
-          res.redirect("/");
-        })
-      }
-    })
+      res.render("user/userIndex.ejs", {recommendedMovies: recommendedMovies, user: user});
+
+    }
+  })
 });
 
+
+
 // show user movie routes
-app.get("/tonight/approved/access/home/show/:id", isLoggedIn ,function (req, res) {
+app.get("/tonight/approved/access/:user/show/:id", isLoggedIn ,function (req, res) {
   const id = req.params.id;
+  const user = req.params.user;
   // const sessionId = req.params.session;
   // const accountId = req.params.account;
   showUserMovieOptions = {
@@ -366,7 +371,7 @@ app.get("/tonight/approved/access/home/show/:id", isLoggedIn ,function (req, res
     else {
       console.log(body);
       const content = body;
-      res.render("user/showMovies.ejs", {content: content});
+      res.render("user/showMovies.ejs", {content: content, user: user});
     }
   })
 });

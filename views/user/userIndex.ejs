@@ -1,7 +1,7 @@
 <% include ../partials/user/header %>
 
 
-<h1> Welcome <%=user["username"]%> </h1>
+<h1> Welcome <%=user%> </h1>
 
 <div class=" ui container">
   <div class="ui header"> Specially curated movies for you</div>
@@ -10,7 +10,7 @@
     <% if (recommendedMovies["results"] != null){ %>
 
     <% recommendedMovies["results"].forEach(function(movie) { %>
-    <a class="card" href="/tonight/approved/access/home/show/<%= movie.id %>">
+    <a class="card" href="/tonight/approved/access/<%= user %>/show/<%= movie.id %>">
     <div class="image">
   <img src="https://image.tmdb.org/t/p/original<%=movie.poster_path;%>" alt="poster image">
 </div>
