@@ -55,7 +55,7 @@ const bearerAuth    = config.auth;
 
 //middleware to chek sessions
 isLoggedIn = (req,res,next) => {
-  if(req.session.sessionId){
+  if(req.session.sessionId && req.session.user){
     return next();
   }
   else {
@@ -155,7 +155,7 @@ app.get("/tonight/movies/show/:id", function(req, res) {
     request(showRequest, function (error, response, body) {
       if(!error && response.statusCode==200) {
         const foundContent = JSON.parse(body);
-        res.render("showMovie.ejs", {movieContent: foundContent});
+        res.render("showMovie.ejs", {movieContent: foundContent, user:req.session.user});
         // console.log(foundContent);
       }
     })
@@ -281,6 +281,7 @@ app.get("/tonight/login", function(req, res) {
       rp(accountDetailsOptions)
         .then(function(repos){
           // extracting username from respos and parsing it to the url
+          req.session.user = repos.username;
           res.redirect("/tonight/approved/access/"+repos.username);
         })
         .catch(function (err) {
@@ -324,8 +325,8 @@ app.get("/tonight/login", function(req, res) {
 // USER ROUTES
 
 // user index route
-app.get("/tonight/approved/access/:user", isLoggedIn ,function (req, res) {
-  const user = req.params.user;
+app.get("/tonight/approved/access/:user", isLoggedIn,function (req, res) {
+  const user = req.session.user;
   recommendedMovieOptions = {
     method: 'GET',
     url: 'https://api.themoviedb.org/4/account/'+ req.session.accountId +'/movie/recommendations',
@@ -354,7 +355,7 @@ app.get("/tonight/approved/access/:user", isLoggedIn ,function (req, res) {
 // show user movie routes
 app.get("/tonight/approved/access/:user/show/:id", isLoggedIn ,function (req, res) {
   const id = req.params.id;
-  const user = req.params.user;
+  const user = req.session.user;
   // const sessionId = req.params.session;
   // const accountId = req.params.account;
   showUserMovieOptions = {
@@ -378,9 +379,10 @@ app.get("/tonight/approved/access/:user/show/:id", isLoggedIn ,function (req, re
 
 
 // ratings routes
-app.post("/tonight/approved/access/home/show/:id", isLoggedIn ,function (req,res) {
+app.post("/tonight/approved/access/:user/show/:id", isLoggedIn,function (req,res) {
   const ratings = req.body.ratings;
   const id = req.params.id;
+  const user = req.session.user;
   // const sessionId = req.params.session;
   // const accountId = req.params.account;
   // const sessionid = req.params.
@@ -400,12 +402,12 @@ app.post("/tonight/approved/access/home/show/:id", isLoggedIn ,function (req,res
     }
     else{
       console.log("Rated");
-      res.redirect('/tonight/approved/access/home/show/'+id);
+      res.redirect('/tonight/approved/access/'+user+'/show/'+id);
     }
   })
 });
 
 // bad url handler
-// app.get("/*", function(req, res) {
-//   res.send("Error 404: You're in outer space now! 👽");
-// });
+app.get("/*", function(req, res) {
+  res.send("Error 404: You're in outer space now! 👽");
+});

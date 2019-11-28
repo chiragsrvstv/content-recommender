@@ -15,7 +15,7 @@
     <h3> Your Ratings: <%= content["account_states"].rated.value %> </h3>
   <%    } %>
   </div>
-    <form class="ui form" action="/tonight/approved/access/home/show/<%=content["id"]%>" method="POST">
+    <form class="ui form" action="/tonight/approved/<%=user%>/home/show/<%=content["id"]%>" method="POST">
     <input type="range" name="ratings" min="0" max="10">
     <button type="submit" class="ui button"> Rate it </button>
   </form>

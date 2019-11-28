@@ -21,7 +21,14 @@
 
 
 <div>
-  <form class="ui form" action="/tonight/approved/access/"+user+"/show/<%=movieContent["id"]%>" method="POST">
+  <!-- form's action is a bit messed up, coz checking here if username is null -->
+  <form class="ui form" action="/tonight/approved/access/
+  <% if(!user){ %>
+    <%= 'random' %>
+  <%} else { %>
+    <%= user %>
+  <%}%>
+              /show/<%=movieContent["id"]%>" method="POST">
   <input type="range" name="ratings" min="0" max="10">
   <button type="submit" class="ui button"> Rate it </button>
 </form>

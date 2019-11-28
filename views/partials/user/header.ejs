@@ -31,8 +31,9 @@
           TV Series
         </a>
         <div class="right menu">
-          <a href="/tonight/login" class="item">
-            Welcome 
+          <!-- the user variable is loaded from from req params -->
+          <a href="/tonight/approved/access/"+user class="item">
+            Welcome <%= user %>
           </a>
           <a href="/tonight/logout" class="item">
             Logout
