@@ -244,11 +244,8 @@ app.get("/tonight/login", function(req, res) {
  });
 
 // generating a sessionId
-// app.get("/tonight/approved/:access/:account/", function (req, res) {
   app.get("/tonight/approved/access", function (req, res) {
-  // const accountId = req.params.account;
-  // const accessToken = req.params.access;
-
+  
   sessionIdOptions = {
     method: 'POST',
     url: 'https://api.themoviedb.org/3/authentication/session/convert/4',
@@ -282,6 +279,7 @@ app.get("/tonight/login", function(req, res) {
         .then(function(repos){
           // extracting username from respos and parsing it to the url
           req.session.user = repos.username;
+          res.locals.user = repos.username;
           res.redirect("/tonight/approved/access/"+repos.username);
         })
         .catch(function (err) {
@@ -423,7 +421,7 @@ app.get("/tonight/approved/access/:user/movies", isLoggedIn ,function (req, res)
   })
 });
 
-// seperate movies page dedicated to the user
+// seperate tv page dedicated to the user
 app.get("/tonight/approved/access/:user/tv", isLoggedIn ,function (req, res) {
   const user = req.session.user;
   const movieRequest =
@@ -431,7 +429,7 @@ app.get("/tonight/approved/access/:user/tv", isLoggedIn ,function (req, res) {
   request(movieRequest, function(error, response, body) {
     if (!error && response.statusCode == 200) {
       const data = JSON.parse(body);
-      res.render("user/userMovies.ejs", { data: data, user: user });
+      res.render("user/userTvseries.ejs", { data: data, user: user });
     }
     else {
       res.send("You're lost !")

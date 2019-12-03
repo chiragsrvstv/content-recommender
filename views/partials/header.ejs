@@ -20,6 +20,25 @@
             <i class="fa fa-headphones fa-3x"></i>
 
           </div>
+          <% if(locals.user) { %>
+            <a href="/tonight/approved/access/<%= user %>" class="active item">
+              Home
+            </a>
+            <a href="/tonight/approved/access/<%= user %>/movies" class="item">
+              Movies
+            </a>
+            <a class="item">
+              TV Series
+            </a>
+            <div class="right menu">
+              <!-- the user variable is loaded from from req params -->
+              <a href="/tonight/approved/access/<%= user %>" class="item">
+                Welcome <%= user %>
+              </a>
+              <a href="/tonight/logout" class="item">
+                Logout
+              </a>
+          <% } else { %>
           <a href="/tonight" class="item">
             <i class="fa fa-home"></i>
             Home
@@ -32,14 +51,15 @@
           </a>
           <div class="right menu">
             <a href="/tonight/login" class="item ">
-              Sign Up
+              Login
             </a>
             <a href="/tonight/login" class="item ">
-              Login
+              Sign Up
             </a>
             <a href="/tonight/logout" class="item ">
               Logout
             </a>
+          <% } %>
           </div>
         </nav>
       </div>
