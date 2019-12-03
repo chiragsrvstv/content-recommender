@@ -407,38 +407,6 @@ app.post("/tonight/approved/access/:user/show/:id", isLoggedIn,function (req,res
   })
 });
 
-// seperate movies page dedicated to the user
-app.get("/tonight/approved/access/:user/movies", isLoggedIn ,function (req, res) {
-  const user = req.session.user;
-  const movieRequest =
-    "https://api.themoviedb.org/3/discover/movie?api_key="+apiKey+"&language=en-US&sort_by=popularity.desc&region=IN&year=2019&include_adult=true&include_video=false&page=1";
-  request(movieRequest, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      const data = JSON.parse(body);
-      res.render("user/userMovies.ejs", { data: data, user: user });
-    }
-    else {
-      res.send("You're lost !")
-    }
-  })
-});
-
-// seperate movies page dedicated to the user
-app.get("/tonight/approved/access/:user/tv", isLoggedIn ,function (req, res) {
-  const user = req.session.user;
-  const movieRequest =
-    "https://api.themoviedb.org/3/discover/movie?api_key="+apiKey+"&language=en-US&sort_by=popularity.desc&region=IN&year=2019&include_adult=true&include_video=false&page=1";
-  request(movieRequest, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      const data = JSON.parse(body);
-      res.render("user/userMovies.ejs", { data: data, user: user });
-    }
-    else {
-      res.send("You're lost !")
-    }
-  })
-});
-
 // bad url handler
 app.get("/*", function(req, res) {
   res.send("Error 404: You're in outer space now! 👽");
