@@ -21,18 +21,18 @@
 
           </div>
           <% if(locals.user) { %>
-            <a href="/tonight/approved/access/<%= user %>" class="active item">
+            <a href="/tonight/approved/access/<%=user%>" class="active item">
               Home
             </a>
-            <a href="/tonight/approved/access/<%= user %>/movies" class="item">
+            <a href="/tonight/approved/access/<%=user%>/movies" class="item">
               Movies
             </a>
-            <a class="item">
+            <a href="/tonight/approved/access/<%=user%>/tv" class="item">
               TV Series
             </a>
             <div class="right menu">
               <!-- the user variable is loaded from from req params -->
-              <a href="/tonight/approved/access/<%= user %>" class="item">
+              <a href="/tonight/approved/access/<%=user%>" class="item">
                 Welcome <%= user %>
               </a>
               <a href="/tonight/logout" class="item">

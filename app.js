@@ -169,7 +169,7 @@ app.get("/tonight/tvseries/show/:id", function(req, res) {
     request(showRequest, function (error, response, body) {
       if(!error && response.statusCode==200) {
         const foundContent = JSON.parse(body);
-        res.render("showTV.ejs", {tvContent: foundContent});
+        res.render("showTV.ejs", {tvContent: foundContent, user:req.session.user});
         // console.log(foundContent);
       }
     })
@@ -245,7 +245,7 @@ app.get("/tonight/login", function(req, res) {
 
 // generating a sessionId
   app.get("/tonight/approved/access", function (req, res) {
-  
+
   sessionIdOptions = {
     method: 'POST',
     url: 'https://api.themoviedb.org/3/authentication/session/convert/4',
@@ -424,12 +424,12 @@ app.get("/tonight/approved/access/:user/movies", isLoggedIn ,function (req, res)
 // seperate tv page dedicated to the user
 app.get("/tonight/approved/access/:user/tv", isLoggedIn ,function (req, res) {
   const user = req.session.user;
-  const movieRequest =
-    "https://api.themoviedb.org/3/discover/movie?api_key="+apiKey+"&language=en-US&sort_by=popularity.desc&region=IN&year=2019&include_adult=true&include_video=false&page=1";
-  request(movieRequest, function(error, response, body) {
+  const tvRequest =
+    "https://api.themoviedb.org/3/discover/tv?api_key="+apiKey+"&language=en-US&region=IN&sort_by=popularity.desc&page=1&include_null_first_air_dates=false";
+  request(tvRequest, function(error, response, body) {
     if (!error && response.statusCode == 200) {
       const data = JSON.parse(body);
-      res.render("user/userTvseries.ejs", { data: data, user: user });
+      res.render("user/userTvSeries.ejs", { data: data, user: user});
     }
     else {
       res.send("You're lost !")

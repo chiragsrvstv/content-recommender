@@ -1,0 +1,83 @@
+<div class="ui grid container">
+
+<div class="sixteen wide column">
+  <h1> What are you gonna watch tonight ? </h1>
+</div>
+<div class="eight wide column">
+  <form class="" action="/tonight/tvseries/tvresults" method="post">
+  <div class="genre-container">
+    <ul class="ks-cboxtags">
+      <li> <input type="checkbox" id="checkboxOne" name="genre" value="10759">
+        <label for="checkboxOne"> Action & Adventure </label>
+      </li>
+      <li> <input type="checkbox" id="checkboxThree" name="genre" value="18">
+        <label for="checkboxThree"> Drama </label>
+      </li>
+      <li> <input type="checkbox" id="checkboxFour"  name="genre" value="35">
+        <label for="checkboxFour"> Comedy </label>
+      </li>
+      <li> <input type="checkbox" id="checkboxFive" name="genre" value="10762">
+        <label for="checkboxFive"> Kids </label>
+      </li>
+      <li> <input type="checkbox" id="checkboxSix" name="genre" value="16">
+        <label for="checkboxSix"> Animation </label>
+      </li>
+      <li> <input type="checkbox" id="checkboxSeven" name="genre" value="10764">
+        <label for="checkboxSeven"> Reality </label>
+      </li>
+      <li> <input type="checkbox" id="checkboxEight" name="genre" value="10765">
+        <label for="checkboxEight"> Sci-Fi & Fantasy </label>
+      </li>
+      <li> <input type="checkbox" id="checkboxNine" name="genre" value="10751">
+        <label for="checkboxNine"> Family </label>
+      </li>
+      <li> <input type="checkbox" id="checkboxTen" name="genre" value="10767">
+        <label for="checkboxTen"> Talk </label>
+      </li>
+      <li class="ks-selected"> <input type="checkbox" id="checkboxEleven" name="genre" value="9648">
+        <label for="checkboxEleven"> Crime </label>
+      </li>
+      <li> <input type="checkbox" id="checkboxTwelve" name="genre" value="99">
+        <label for="checkboxTwelve"> Documentary </label>
+      </li>
+      <li> <input type="checkbox" id="checkboxThirteen" name="genre" value="10768">
+        <label for="checkboxThirteen"> War & Politics </label>
+      </li>
+      <li> <input type="checkbox" id="checkboxFourteen" name="genre" value="9648">
+        <label for="checkboxFourteen"> Mystery </label>
+      </li>
+    </ul>
+  </div>
+  <div class="five wide column">
+  <button class="ui huge positive button"> Recommend A TV Content ! </button>
+</div>
+</form>
+</div>
+
+<div class="eight wide column">
+  <form class="" action="/tonight/tvseries/tvresults" method="POST">
+  <div class="ui card ">
+  <label class="ui blue huge circular label"> <input type="radio" name="genre" value="35, 10749"> Easy </label>
+  </div>
+  <div class="ui card">
+  <label class="ui pink huge circular label"> <input type="radio" name="genre" value="10751, 35, 12"> Uplifiting </label>
+  </div>
+  <div class="ui card">
+  <label class="ui red huge circular label"> <input type="radio" name="genre" value="18, 53, 80"> Thrilling </label>
+  </div>
+</div>
+
+
+
+<div class="sixteen wide column"><h2> Most popular on TV </h2></div>
+<div class="ui four wide link cards">
+  <% data["results"].forEach(function(tvs){ %>
+    <a class="card" href="/tonight/tvseries/show/<%=tvs.id %>">
+      <div class="image">
+        <img src="https://image.tmdb.org/t/p/original<%=tvs.poster_path;%>" alt="poster image">
+      </div>
+    </a>
+  <% }); %>
+</div>
+
+</div>
