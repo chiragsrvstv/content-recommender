@@ -377,13 +377,12 @@ app.get("/tonight/approved/access/:user/show/:id", isLoggedIn ,function (req, re
 
 
 // ratings routes
-app.post("/tonight/approved/access/:user/show/:id", isLoggedIn,function (req,res) {
+//movie ratings
+app.post("/tonight/approved/access/:user/movie/show/:id", isLoggedIn,function (req,res) {
   const ratings = req.body.ratings;
   const id = req.params.id;
   const user = req.session.user;
-  // const sessionId = req.params.session;
-  // const accountId = req.params.account;
-  // const sessionid = req.params.
+
   console.log(ratings, id);
   ratingOptions = {
     method: 'POST',
@@ -404,6 +403,34 @@ app.post("/tonight/approved/access/:user/show/:id", isLoggedIn,function (req,res
     }
   })
 });
+
+// tv ratings
+app.post("/tonight/approved/access/:user/tv/show/:id", isLoggedIn,function (req,res) {
+  const ratings = req.body.ratings;
+  const id = req.params.id;
+  const user = req.session.user;
+
+  console.log(ratings, id);
+  ratingOptions = {
+    method: 'POST',
+    url: 'https://api.themoviedb.org/3/tv/'+id+'/rating',
+    qs: {session_id: req.session.sessionId, api_key: apiKey},
+    headers: { 'content-type': 'application/json;charset=utf-8' },
+    body: {value: ratings},
+    json: true
+  }
+  request(ratingOptions, function(error, response, body){
+    //if(!error && response.statusCode==200)
+    if(error){
+      console.log(error);
+    }
+    else{
+      console.log("Rated");
+      res.redirect('/tonight/approved/access/'+user+'/show/'+id);
+    }
+  })
+});
+
 
 // seperate movies page dedicated to the user
 app.get("/tonight/approved/access/:user/movies", isLoggedIn ,function (req, res) {
