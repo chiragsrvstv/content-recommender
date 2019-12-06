@@ -358,7 +358,7 @@ app.get("/tonight/approved/access/:user/show/:id", isLoggedIn ,function (req, re
   // const accountId = req.params.account;
   showUserMovieOptions = {
     method: 'GET',
-    url: 'https://api.themoviedb.org/3/movie/'+id,
+    url: 'https://api.themoviedb.org/3/movie/'+id+'&language=en-US',
     qs: {api_key: apiKey, session_id: req.session.sessionId, append_to_response: "account_states" },
     body:'{}',
     json: true
@@ -371,6 +371,30 @@ app.get("/tonight/approved/access/:user/show/:id", isLoggedIn ,function (req, re
       console.log(body);
       const content = body;
       res.render("user/showMovies.ejs", {content: content, user: user});
+    }
+  })
+});
+
+// show user tv routes
+app.get("/tonight/approved/access/:user/tv/show/:id", isLoggedIn ,function (req, res) {
+  const id = req.params.id;
+  const user = req.session.user;
+
+  showUserTvOptions = {
+    method: 'GET',
+    url: 'https://api.themoviedb.org/3/tv/'+id+'&language=en-US',
+    qs: {api_key: apiKey, session_id: req.session.sessionId, append_to_response: "account_states" },
+    body:'{}',
+    json: true
+  };
+  request(showUserTvOptions, function (error, response, body) {
+    if(error){
+      res.send("Ah jeez, that's an error !");
+    }
+    else {
+      console.log(body);
+      const content = body;
+      res.render("user/showTv.ejs", {content: content, user: user});
     }
   })
 });
@@ -426,7 +450,7 @@ app.post("/tonight/approved/access/:user/tv/show/:id", isLoggedIn,function (req,
     }
     else{
       console.log("Rated");
-      res.redirect('/tonight/approved/access/'+user+'/show/'+id);
+      res.redirect('/tonight/approved/access/'+user+'/tv/show/'+id);
     }
   })
 });
