@@ -67,12 +67,18 @@ isLoggedIn = (req,res,next) => {
 
 // landing Page
 app.get("/", function(req, res) {
-  res.redirect("/tonight");
+  res.redirect("/tonight")
+
 });
 
 //index route
 app.get("/tonight", function(req, res) {
-  res.render("index.ejs");
+  // if a session already exists we redirect the user to their accounts landing page
+  if(req.session.sessionId != undefined){
+    res.redirect("/tonight/approved/access/"+req.session.user);
+  } else {
+    res.render("index.ejs");
+  }
 });
 
 // movies route and api connection
