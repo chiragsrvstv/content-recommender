@@ -10,8 +10,8 @@ application is just for you.
 
 
 ### Mac/Linux
-1. Open terminal and `cd` into the downloaded directory `contentRecommendation`
-2. Clone or download the repository to your local machine.
+1. Clone or download the repository to your local machine.
+2. Open terminal and `cd` into the downloaded directory `contentRecommendation`
 3. Make sure NodeJS and npm is installed. For help visit: https://www.nodejs.org/en/
 4. Now run `npm install express redis` to install express framework and redis.
 5. Similarly install other dependencies required for this project using npm from `package.json`
