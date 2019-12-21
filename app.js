@@ -285,7 +285,7 @@ app.get("/tonight/login", function(req, res) {
         .then(function(repos){
           // extracting username from respos and parsing it to the url
           req.session.user = repos.username;
-          res.locals.user = repos.username;
+          app.locals.user = repos.username;
           res.redirect("/tonight/approved/access/"+repos.username);
         })
         .catch(function (err) {
@@ -360,23 +360,22 @@ app.get("/tonight/approved/access/:user", isLoggedIn,function (req, res) {
 app.get("/tonight/approved/access/:user/show/:id", isLoggedIn ,function (req, res) {
   const id = req.params.id;
   const user = req.session.user;
-  // const sessionId = req.params.session;
-  // const accountId = req.params.account;
+  console.log(user,id);
   showUserMovieOptions = {
     method: 'GET',
-    url: 'https://api.themoviedb.org/3/movie/'+id+'&language=en-US',
-    qs: {api_key: apiKey, session_id: req.session.sessionId, append_to_response: "account_states" },
-    body:'{}',
+    url: 'https://api.themoviedb.org/3/movie/'+id,
+    qs: {api_key: apiKey, session_id: req.session.sessionId, append_to_response: "account_states"},
     json: true
   };
   request(showUserMovieOptions, function (error, response, body) {
-    if(error){
-      res.send("Ah jeez, that's an error !");
-    }
-    else {
+    if(!error && response.statusCode == 200){
       console.log(body);
       const content = body;
       res.render("user/showMovies.ejs", {content: content, user: user});
+    }
+    else {
+      res.send("Ah jeez, that's an error !");
+      console.log(response);
     }
   })
 });
