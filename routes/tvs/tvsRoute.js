@@ -29,7 +29,7 @@ router.post("/tonight/tvseries/tvresults", function(req, res) {
   // generating random genres when the user has not specified it.
   if (genres == undefined) {
     const tvGenreList = [10759, 18, 35, 10762, 10765, 9648, 80];
-    genres = randomGenres(tvGenreList);
+    genres = config.randomGenres(tvGenreList);
   }
 
   // making api request for popular tv shows
