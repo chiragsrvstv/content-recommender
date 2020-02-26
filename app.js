@@ -14,7 +14,9 @@ const tonightRoute = require("./routes/tonightRoute.js"),
       moviesRoute  = require("./routes/movies/moviesRoute.js"),
       tvsRoute  = require("./routes/tvs/tvsRoute.js"),
       authRoute = require("./routes/authentication/auth.js"),
-      authMovieRoute = require("./routes/authentication/movies/authMovie.js");
+      authMovieRoute = require("./routes/authentication/movies/authMovie.js"),
+      authTvRoute = require("./routes/authentication/tv/authTv.js");
+
 
 // API configs
 const apiKey = api.api_key;
@@ -69,9 +71,16 @@ app.use(moviesRoute);
 app.use(tvsRoute);
 app.use(authRoute);
 app.use(authMovieRoute);
+app.use(authTvRoute);
 
 
+// bad url handler
+app.get("/*", function(req, res) {
+  res.send("Error 404: You're in outer space now! 👽");
+});
 
+
+// ---------------------------------------- LEGACY -----------------------------
 // AUTHENTICATION
 
 // //initializing requestToken
@@ -271,29 +280,29 @@ app.use(authMovieRoute);
 //   })
 // });
 
-// show user tv routes
-app.get("/tonight/approved/access/:user/tv/show/:id", isLoggedIn ,function (req, res) {
-  const id = req.params.id;
-  const user = req.session.user;
-
-  showUserTvOptions = {
-    method: 'GET',
-    url: 'https://api.themoviedb.org/3/tv/'+id+'&language=en-US',
-    qs: {api_key: apiKey, session_id: req.session.sessionId, append_to_response: "account_states" },
-    body:'{}',
-    json: true
-  };
-  request(showUserTvOptions, function (error, response, body) {
-    if(error){
-      res.send("Ah jeez, that's an error !");
-    }
-    else {
-      console.log(body);
-      const content = body;
-      res.render("user/showTv.ejs", {content: content, user: user});
-    }
-  })
-});
+// // show user tv routes
+// app.get("/tonight/approved/access/:user/tv/show/:id", isLoggedIn ,function (req, res) {
+//   const id = req.params.id;
+//   const user = req.session.user;
+//
+//   showUserTvOptions = {
+//     method: 'GET',
+//     url: 'https://api.themoviedb.org/3/tv/'+id+'&language=en-US',
+//     qs: {api_key: apiKey, session_id: req.session.sessionId, append_to_response: "account_states" },
+//     body:'{}',
+//     json: true
+//   };
+//   request(showUserTvOptions, function (error, response, body) {
+//     if(error){
+//       res.send("Ah jeez, that's an error !");
+//     }
+//     else {
+//       console.log(body);
+//       const content = body;
+//       res.render("user/showTv.ejs", {content: content, user: user});
+//     }
+//   })
+// });
 
 
 // ratings routes
@@ -323,34 +332,34 @@ app.get("/tonight/approved/access/:user/tv/show/:id", isLoggedIn ,function (req,
 //     }
 //   })
 // });
-
-// tv ratings
-app.post("/tonight/approved/access/:user/tv/show/:id", isLoggedIn,function (req,res) {
-  const ratings = req.body.ratings;
-  const id = req.params.id;
-  const user = req.session.user;
-
-  console.log(ratings, id);
-  ratingOptions = {
-    method: 'POST',
-    url: 'https://api.themoviedb.org/3/tv/'+id+'/rating',
-    qs: {session_id: req.session.sessionId, api_key: apiKey},
-    headers: { 'content-type': 'application/json;charset=utf-8' },
-    body: {value: ratings},
-    json: true
-  }
-  request(ratingOptions, function(error, response, body){
-    //if(!error && response.statusCode==200)
-    if(error){
-      console.log(error);
-    }
-    else{
-      console.log("Rated");
-      res.redirect('/tonight/approved/access/'+user+'/tv/show/'+id);
-    }
-  })
-});
-
+//
+// // tv ratings
+// app.post("/tonight/approved/access/:user/tv/show/:id", isLoggedIn,function (req,res) {
+//   const ratings = req.body.ratings;
+//   const id = req.params.id;
+//   const user = req.session.user;
+//
+//   console.log(ratings, id);
+//   ratingOptions = {
+//     method: 'POST',
+//     url: 'https://api.themoviedb.org/3/tv/'+id+'/rating',
+//     qs: {session_id: req.session.sessionId, api_key: apiKey},
+//     headers: { 'content-type': 'application/json;charset=utf-8' },
+//     body: {value: ratings},
+//     json: true
+//   }
+//   request(ratingOptions, function(error, response, body){
+//     //if(!error && response.statusCode==200)
+//     if(error){
+//       console.log(error);
+//     }
+//     else{
+//       console.log("Rated");
+//       res.redirect('/tonight/approved/access/'+user+'/tv/show/'+id);
+//     }
+//   })
+// });
+//
 
 // // seperate movies page dedicated to the user
 // app.get("/tonight/approved/access/:user/movies", isLoggedIn ,function (req, res) {
@@ -367,24 +376,19 @@ app.post("/tonight/approved/access/:user/tv/show/:id", isLoggedIn,function (req,
 //     }
 //   })
 // });
-
-// seperate tv page dedicated to the user
-app.get("/tonight/approved/access/:user/tv", isLoggedIn ,function (req, res) {
-  const user = req.session.user;
-  const tvRequest =
-    "https://api.themoviedb.org/3/discover/tv?api_key="+apiKey+"&language=en-US&region=IN&sort_by=popularity.desc&page=1&include_null_first_air_dates=false";
-  request(tvRequest, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      const data = JSON.parse(body);
-      res.render("user/userTvSeries.ejs", { data: data, user: user});
-    }
-    else {
-      res.send("You're lost !")
-    }
-  })
-});
-
-// bad url handler
-app.get("/*", function(req, res) {
-  res.send("Error 404: You're in outer space now! 👽");
-});
+//
+// // seperate tv page dedicated to the user
+// app.get("/tonight/approved/access/:user/tv", isLoggedIn ,function (req, res) {
+//   const user = req.session.user;
+//   const tvRequest =
+//     "https://api.themoviedb.org/3/discover/tv?api_key="+apiKey+"&language=en-US&region=IN&sort_by=popularity.desc&page=1&include_null_first_air_dates=false";
+//   request(tvRequest, function(error, response, body) {
+//     if (!error && response.statusCode == 200) {
+//       const data = JSON.parse(body);
+//       res.render("user/userTvSeries.ejs", { data: data, user: user});
+//     }
+//     else {
+//       res.send("You're lost !")
+//     }
+//   })
+// });
