@@ -152,4 +152,31 @@ router.get("/tonight/login", function(req, res) {
     })
   });
 
+  // user index route
+  router.get("/tonight/approved/access/:user", isLoggedIn,function (req, res) {
+    const user = req.session.user;
+    recommendedMovieOptions = {
+      method: 'GET',
+      url: 'https://api.themoviedb.org/4/account/'+ req.session.accountId +'/movie/recommendations',
+      qs: {page: '1'},
+      headers: {
+        authorization: 'Bearer ' + req.session.accessToken,
+        'Content-Type': 'application/json'
+      },
+      json: true
+    };
+    request(recommendedMovieOptions, function (error, response, body) {
+      const recommendedMovies = body;
+      console.log(recommendedMovies);
+      if(error) {
+        res.send("Ah boo, that's an error !");
+      }
+      else {
+        res.render("user/userIndex.ejs", {recommendedMovies: recommendedMovies, user: user});
+
+      }
+    })
+  });
+
+
 module.exports = router;

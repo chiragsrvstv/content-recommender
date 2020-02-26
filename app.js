@@ -13,7 +13,8 @@ const express = require("express"),
 const tonightRoute = require("./routes/tonightRoute.js"),
       moviesRoute  = require("./routes/movies/moviesRoute.js"),
       tvsRoute  = require("./routes/tvs/tvsRoute.js"),
-      authRoute = require("./routes/authentication/auth.js");
+      authRoute = require("./routes/authentication/auth.js"),
+      authMovieRoute = require("./routes/authentication/movies/authMovie.js");
 
 // API configs
 const apiKey = api.api_key;
@@ -67,6 +68,7 @@ app.use(tonightRoute);
 app.use(moviesRoute);
 app.use(tvsRoute);
 app.use(authRoute);
+app.use(authMovieRoute);
 
 
 
@@ -217,57 +219,57 @@ app.use(authRoute);
 
 // USER ROUTES
 
-// user index route
-app.get("/tonight/approved/access/:user", isLoggedIn,function (req, res) {
-  const user = req.session.user;
-  recommendedMovieOptions = {
-    method: 'GET',
-    url: 'https://api.themoviedb.org/4/account/'+ req.session.accountId +'/movie/recommendations',
-    qs: {page: '1'},
-    headers: {
-      authorization: 'Bearer ' + req.session.accessToken,
-      'Content-Type': 'application/json'
-    },
-    json: true
-  };
-  request(recommendedMovieOptions, function (error, response, body) {
-    const recommendedMovies = body;
-    console.log(recommendedMovies);
-    if(error) {
-      res.send("Ah boo, that's an error !");
-    }
-    else {
-      res.render("user/userIndex.ejs", {recommendedMovies: recommendedMovies, user: user});
+// // user index route
+// app.get("/tonight/approved/access/:user", isLoggedIn,function (req, res) {
+//   const user = req.session.user;
+//   recommendedMovieOptions = {
+//     method: 'GET',
+//     url: 'https://api.themoviedb.org/4/account/'+ req.session.accountId +'/movie/recommendations',
+//     qs: {page: '1'},
+//     headers: {
+//       authorization: 'Bearer ' + req.session.accessToken,
+//       'Content-Type': 'application/json'
+//     },
+//     json: true
+//   };
+//   request(recommendedMovieOptions, function (error, response, body) {
+//     const recommendedMovies = body;
+//     console.log(recommendedMovies);
+//     if(error) {
+//       res.send("Ah boo, that's an error !");
+//     }
+//     else {
+//       res.render("user/userIndex.ejs", {recommendedMovies: recommendedMovies, user: user});
+//
+//     }
+//   })
+// });
+//
 
-    }
-  })
-});
 
-
-
-// show user movie routes
-app.get("/tonight/approved/access/:user/show/:id", isLoggedIn ,function (req, res) {
-  const id = req.params.id;
-  const user = req.session.user;
-  console.log(user,id);
-  showUserMovieOptions = {
-    method: 'GET',
-    url: 'https://api.themoviedb.org/3/movie/'+id,
-    qs: {api_key: apiKey, session_id: req.session.sessionId, append_to_response: "account_states"},
-    json: true
-  };
-  request(showUserMovieOptions, function (error, response, body) {
-    if(!error && response.statusCode == 200){
-      console.log(body);
-      const content = body;
-      res.render("user/showMovies.ejs", {content: content, user: user});
-    }
-    else {
-      res.send("Ah jeez, that's an error !");
-      console.log(response);
-    }
-  })
-});
+// // show user movie routes
+// app.get("/tonight/approved/access/:user/show/:id", isLoggedIn ,function (req, res) {
+//   const id = req.params.id;
+//   const user = req.session.user;
+//   console.log(user,id);
+//   showUserMovieOptions = {
+//     method: 'GET',
+//     url: 'https://api.themoviedb.org/3/movie/'+id,
+//     qs: {api_key: apiKey, session_id: req.session.sessionId, append_to_response: "account_states"},
+//     json: true
+//   };
+//   request(showUserMovieOptions, function (error, response, body) {
+//     if(!error && response.statusCode == 200){
+//       console.log(body);
+//       const content = body;
+//       res.render("user/showMovies.ejs", {content: content, user: user});
+//     }
+//     else {
+//       res.send("Ah jeez, that's an error !");
+//       console.log(response);
+//     }
+//   })
+// });
 
 // show user tv routes
 app.get("/tonight/approved/access/:user/tv/show/:id", isLoggedIn ,function (req, res) {
@@ -295,32 +297,32 @@ app.get("/tonight/approved/access/:user/tv/show/:id", isLoggedIn ,function (req,
 
 
 // ratings routes
-//movie ratings
-app.post("/tonight/approved/access/:user/movie/show/:id", isLoggedIn,function (req,res) {
-  const ratings = req.body.ratings;
-  const id = req.params.id;
-  const user = req.session.user;
-
-  console.log(ratings, id);
-  ratingOptions = {
-    method: 'POST',
-    url: 'https://api.themoviedb.org/3/movie/'+id+'/rating',
-    qs: {session_id: req.session.sessionId, api_key: apiKey},
-    headers: { 'content-type': 'application/json;charset=utf-8' },
-    body: {value: ratings},
-    json: true
-  }
-  request(ratingOptions, function(error, response, body){
-    //if(!error && response.statusCode==200)
-    if(error){
-      console.log(error);
-    }
-    else{
-      console.log("Rated");
-      res.redirect('/tonight/approved/access/'+user+'/show/'+id);
-    }
-  })
-});
+// //movie ratings
+// app.post("/tonight/approved/access/:user/movie/show/:id", isLoggedIn,function (req,res) {
+//   const ratings = req.body.ratings;
+//   const id = req.params.id;
+//   const user = req.session.user;
+//
+//   console.log(ratings, id);
+//   ratingOptions = {
+//     method: 'POST',
+//     url: 'https://api.themoviedb.org/3/movie/'+id+'/rating',
+//     qs: {session_id: req.session.sessionId, api_key: apiKey},
+//     headers: { 'content-type': 'application/json;charset=utf-8' },
+//     body: {value: ratings},
+//     json: true
+//   }
+//   request(ratingOptions, function(error, response, body){
+//     //if(!error && response.statusCode==200)
+//     if(error){
+//       console.log(error);
+//     }
+//     else{
+//       console.log("Rated");
+//       res.redirect('/tonight/approved/access/'+user+'/show/'+id);
+//     }
+//   })
+// });
 
 // tv ratings
 app.post("/tonight/approved/access/:user/tv/show/:id", isLoggedIn,function (req,res) {
@@ -350,21 +352,21 @@ app.post("/tonight/approved/access/:user/tv/show/:id", isLoggedIn,function (req,
 });
 
 
-// seperate movies page dedicated to the user
-app.get("/tonight/approved/access/:user/movies", isLoggedIn ,function (req, res) {
-  const user = req.session.user;
-  const movieRequest =
-    "https://api.themoviedb.org/3/discover/movie?api_key="+apiKey+"&language=en-US&sort_by=popularity.desc&region=IN&year=2019&include_adult=true&include_video=false&page=1";
-  request(movieRequest, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      const data = JSON.parse(body);
-      res.render("user/userMovies.ejs", { data: data, user: user });
-    }
-    else {
-      res.send("You're lost !")
-    }
-  })
-});
+// // seperate movies page dedicated to the user
+// app.get("/tonight/approved/access/:user/movies", isLoggedIn ,function (req, res) {
+//   const user = req.session.user;
+//   const movieRequest =
+//     "https://api.themoviedb.org/3/discover/movie?api_key="+apiKey+"&language=en-US&sort_by=popularity.desc&region=IN&year=2019&include_adult=true&include_video=false&page=1";
+//   request(movieRequest, function(error, response, body) {
+//     if (!error && response.statusCode == 200) {
+//       const data = JSON.parse(body);
+//       res.render("user/userMovies.ejs", { data: data, user: user });
+//     }
+//     else {
+//       res.send("You're lost !")
+//     }
+//   })
+// });
 
 // seperate tv page dedicated to the user
 app.get("/tonight/approved/access/:user/tv", isLoggedIn ,function (req, res) {
