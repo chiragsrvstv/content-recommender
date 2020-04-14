@@ -50,22 +50,7 @@ app.use(
   saveUninitialized: true,
 }));
 
-//
-// // a function to randomly generate combination of Genres from list of passed genres
-// function randomGenres(genresList) {
-//   const generatedList = [];
-//   for (var i = 0; i < 2; i++) {
-//     generatedList.push(
-//       genresList[Math.floor(Math.random() * genresList.length)]
-//     );
-//   }
-//   return generatedList;
-// }
-
-
-
-//-----------------------routes--------------------------------
-
+// routes
 app.use(tonightRoute);
 app.use(moviesRoute);
 app.use(tvsRoute);
@@ -81,6 +66,23 @@ app.get("/*", function(req, res) {
 
 
 // ---------------------------------------- LEGACY -----------------------------
+
+
+//
+// // a function to randomly generate combination of Genres from list of passed genres
+// function randomGenres(genresList) {
+//   const generatedList = [];
+//   for (var i = 0; i < 2; i++) {
+//     generatedList.push(
+//       genresList[Math.floor(Math.random() * genresList.length)]
+//     );
+//   }
+//   return generatedList;
+// }
+
+
+
+
 // AUTHENTICATION
 
 // //initializing requestToken
